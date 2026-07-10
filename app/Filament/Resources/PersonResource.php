@@ -17,9 +17,11 @@ class PersonResource extends Resource
 {
     protected static ?string $model = Person::class;
 
-    protected static ?string $navigationGroup = 'Perusahaan';
+    protected static ?string $navigationGroup = 'Tentang Kami';
 
-    protected static ?int $navigationSort = 1;
+    protected static ?string $navigationLabel = 'Dewan (BOC & BOD)';
+
+    protected static ?int $navigationSort = 2;
 
     protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
 

@@ -17,9 +17,11 @@ class ArticleResource extends Resource
 {
     protected static ?string $model = Article::class;
 
-    protected static ?string $navigationGroup = 'Konten';
+    protected static ?string $navigationGroup = 'Berita';
 
-    protected static ?int $navigationSort = 1;
+    protected static ?string $navigationLabel = 'Artikel';
+
+    protected static ?int $navigationSort = 2;
 
     protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
 

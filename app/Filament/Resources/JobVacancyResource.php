@@ -17,9 +17,11 @@ class JobVacancyResource extends Resource
 {
     protected static ?string $model = JobVacancy::class;
 
-    protected static ?string $navigationGroup = 'Karir dan Kontak';
+    protected static ?string $navigationGroup = 'Karir & Kontak';
 
-    protected static ?int $navigationSort = 1;
+    protected static ?string $navigationLabel = 'Lowongan Kerja';
+
+    protected static ?int $navigationSort = 2;
 
     protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
 

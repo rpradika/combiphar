@@ -17,6 +17,11 @@ class PageResource extends Resource
 {
     protected static ?string $model = Page::class;
 
+    public static function shouldRegisterNavigation(): bool
+    {
+        return false;
+    }
+
     protected static ?string $navigationGroup = 'Halaman';
 
     protected static ?int $navigationSort = 1;

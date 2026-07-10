@@ -17,9 +17,11 @@ class FacilityResource extends Resource
 {
     protected static ?string $model = Facility::class;
 
-    protected static ?string $navigationGroup = 'Perusahaan';
+    protected static ?string $navigationGroup = 'Tentang Kami';
 
-    protected static ?int $navigationSort = 5;
+    protected static ?string $navigationLabel = 'Fasilitas Produksi';
+
+    protected static ?int $navigationSort = 4;
 
     protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
 

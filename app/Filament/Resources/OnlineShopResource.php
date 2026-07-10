@@ -17,9 +17,11 @@ class OnlineShopResource extends Resource
 {
     protected static ?string $model = OnlineShop::class;
 
-    protected static ?string $navigationGroup = 'Perusahaan';
+    protected static ?string $navigationGroup = 'Tentang Kami';
 
-    protected static ?int $navigationSort = 3;
+    protected static ?string $navigationLabel = 'Toko Online Resmi';
+
+    protected static ?int $navigationSort = 8;
 
     protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
 

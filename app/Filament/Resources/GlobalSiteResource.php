@@ -17,9 +17,11 @@ class GlobalSiteResource extends Resource
 {
     protected static ?string $model = GlobalSite::class;
 
-    protected static ?string $navigationGroup = 'Perusahaan';
+    protected static ?string $navigationGroup = 'Tentang Kami';
 
-    protected static ?int $navigationSort = 2;
+    protected static ?string $navigationLabel = 'Jangkauan Bisnis';
+
+    protected static ?int $navigationSort = 7;
 
     protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
 

@@ -17,7 +17,9 @@ class MilestoneResource extends Resource
 {
     protected static ?string $model = Milestone::class;
 
-    protected static ?string $navigationGroup = 'Konten';
+    protected static ?string $navigationGroup = 'Beranda';
+
+    protected static ?string $navigationLabel = 'Linimasa Perjalanan';
 
     protected static ?int $navigationSort = 3;
 

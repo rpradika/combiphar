@@ -19,7 +19,9 @@ class InvestorDocumentResource extends Resource
 
     protected static ?string $navigationGroup = 'Investor';
 
-    protected static ?int $navigationSort = 1;
+    protected static ?string $navigationLabel = 'Dokumen Investor';
+
+    protected static ?int $navigationSort = 2;
 
     protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
 

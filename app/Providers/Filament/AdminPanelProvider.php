@@ -2,10 +2,14 @@
 
 namespace App\Providers\Filament;
 
+use App\Filament\Resources\PageResource;
+use App\Models\Page;
 use Filament\Http\Middleware\Authenticate;
 use Filament\Http\Middleware\AuthenticateSession;
 use Filament\Http\Middleware\DisableBladeIconComponents;
 use Filament\Http\Middleware\DispatchServingFilamentEvent;
+use Filament\Navigation\NavigationGroup;
+use Filament\Navigation\NavigationItem;
 use Filament\Pages;
 use Filament\Panel;
 use Filament\PanelProvider;
@@ -20,6 +24,17 @@ use Illuminate\View\Middleware\ShareErrorsFromSession;
 
 class AdminPanelProvider extends PanelProvider
 {
+    /** Sidebar groups, one per frontend page (in site order). */
+    public const GROUPS = [
+        'Beranda',
+        'Tentang Kami',
+        'Produk',
+        'Tanggung Jawab Sosial',
+        'Berita',
+        'Investor',
+        'Karir & Kontak',
+    ];
+
     public function panel(Panel $panel): Panel
     {
         return $panel
@@ -27,9 +42,21 @@ class AdminPanelProvider extends PanelProvider
             ->id('admin')
             ->path('admin')
             ->login()
+            ->brandName('Combiphar CMS')
+            ->brandLogo(asset('img/logo-header.svg'))
+            ->brandLogoHeight('2.4rem')
+            ->favicon(asset('img/logo-combiphar.svg'))
             ->colors([
-                'primary' => Color::Amber,
+                // Frontend palette: purple #5B2D8E primary, magenta #DF0077 accent
+                'primary' => Color::hex('#5B2D8E'),
+                'magenta' => Color::hex('#DF0077'),
+                'gray' => Color::Slate,
             ])
+            ->navigationGroups(array_map(
+                fn (string $g) => NavigationGroup::make($g)->collapsible(),
+                self::GROUPS,
+            ))
+            ->navigationItems($this->pageBannerItems())
             ->discoverResources(in: app_path('Filament/Resources'), for: 'App\\Filament\\Resources')
             ->discoverPages(in: app_path('Filament/Pages'), for: 'App\\Filament\\Pages')
             ->pages([
@@ -38,7 +65,6 @@ class AdminPanelProvider extends PanelProvider
             ->discoverWidgets(in: app_path('Filament/Widgets'), for: 'App\\Filament\\Widgets')
             ->widgets([
                 Widgets\AccountWidget::class,
-                Widgets\FilamentInfoWidget::class,
             ])
             ->middleware([
                 EncryptCookies::class,
@@ -54,5 +80,40 @@ class AdminPanelProvider extends PanelProvider
             ->authMiddleware([
                 Authenticate::class,
             ]);
+    }
+
+    /**
+     * One "banner / page text" link per page group, pointing straight at
+     * that page's record in the Pages resource.
+     */
+    private function pageBannerItems(): array
+    {
+        $pages = [
+            ['home', 'Beranda', 'Hero, Manifesto & CTA'],
+            ['about', 'Tentang Kami', 'Banner & Teks Halaman'],
+            ['products', 'Produk', 'Banner Halaman'],
+            ['csr', 'Tanggung Jawab Sosial', 'Banner & Intro'],
+            ['news', 'Berita', 'Banner Halaman'],
+            ['investor', 'Investor', 'Banner Halaman'],
+            ['contact', 'Karir & Kontak', 'Banner Halaman'],
+        ];
+
+        return array_map(fn (array $p) => NavigationItem::make($p[0] . '-banner')
+            ->label($p[2])
+            ->group($p[1])
+            ->sort(1)
+            ->icon('heroicon-o-photo')
+            ->url(function () use ($p) {
+                $id = Page::where('slug', $p[0])->value('id');
+
+                return $id
+                    ? PageResource::getUrl('edit', ['record' => $id])
+                    : PageResource::getUrl('index');
+            })
+            ->isActiveWhen(function () use ($p) {
+                $id = Page::where('slug', $p[0])->value('id');
+
+                return $id && request()->fullUrlIs(PageResource::getUrl('edit', ['record' => $id]) . '*');
+            }), $pages);
     }
 }
