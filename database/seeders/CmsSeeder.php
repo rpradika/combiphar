@@ -66,6 +66,22 @@ class CmsSeeder extends Seeder
             ]);
         }
 
+        // ---- Home page (hero / manifesto / CTA) ----
+        // Uses the hero/CTA fields instead of a banner; images are uploaded via the CMS.
+        Page::create([
+            'slug' => 'home',
+            'meta_title_id' => 'Combiphar - Championing a Healthy Tomorrow',
+            'meta_title_en' => 'Combiphar - Championing a Healthy Tomorrow',
+            'hero_line1_id' => 'Championing a',
+            'hero_line1_en' => 'Championing a',
+            'hero_line2_id' => 'Healthy Tomorrow',
+            'hero_line2_en' => 'Healthy Tomorrow',
+            'manifesto_title_id' => 'Kami percaya kesehatan adalah hak setiap orang.',
+            'manifesto_title_en' => "We believe health is everyone's right.",
+            'cta_title_id' => 'Mari wujudkan hari esok yang lebih sehat bersama Combiphar.',
+            'cta_title_en' => "Let's build a healthier tomorrow together with Combiphar.",
+        ]);
+
         // ---- Product categories + products ----
         $cats = [
             ['consumer-health', 'Consumer Health', 'Consumer Health', 'Produk kesehatan sehari-hari yang terpercaya untuk seluruh keluarga Indonesia.', 'Everyday trusted health products for every Indonesian family.'],
