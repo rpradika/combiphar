@@ -13,7 +13,7 @@ export default function Products({ page, categories, shops }) {
     useEffect(() => {
         const els = document.querySelectorAll(".rv")
         els.forEach((el) => el.classList.add("is-in"))
-      }, [active])
+      }, [active, query, sort])
 
     const cat = categories[active];
     const visible = useMemo(() => {
