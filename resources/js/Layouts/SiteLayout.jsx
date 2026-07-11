@@ -36,6 +36,7 @@ export default function SiteLayout({ children, navMode = 'solid' }) {
     const [scrolled, setScrolled] = useState(false);
     const [menuOpen, setMenuOpen] = useState(false);
     const isHome = url === '/' + locale;
+    
     useReveal(url);
 
     useEffect(() => {
