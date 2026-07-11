@@ -76,7 +76,6 @@ export default function Home({ page, impacts, milestones, categories, articles }
                         <Link key={i} className={'bcard' + (i === 0 ? ' bcard--wide' : '') + (i === 2 ? ' bcard--sq' : '')} href={nav.products}>
                         {c.image && <div className="bcard__art" style={{ backgroundImage: `url('${c.image}')` }}></div>}
                         <h3>{c.name}</h3>
-                        <span className="bcard__arrow"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M5 12h14m-6-6 6 6-6 6"/></svg></span>
                         </Link>
                     ))}
                     </div>
@@ -99,7 +98,7 @@ export default function Home({ page, impacts, milestones, categories, articles }
                                         <h3 className="ncard__title">{a.title}</h3>
                                         <hr />
                                         <p className="ncard__excerpt">{a.excerpt}</p>
-                                        <Link className="btn btn--fill" href={a.url}>{t.read_more}</Link>
+                                        <Link className="ncard__btn" href={a.url}>{t.read_more}</Link>
                                     </div>
                                 </article>
                             ))}

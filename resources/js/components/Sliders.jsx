@@ -70,6 +70,12 @@ export function MilestoneSlider({ items }) {
     const [active, setActive] = useState(0);
     const currentRef = useRef(0);
     useEffect(() => { currentRef.current = active; }, [active]);
+    // Show the first milestone photo by default on page open.
+    useEffect(() => {
+        const el = track.current;
+        if (el) el.scrollTo({ left: 0 });
+        setActive(0);
+    }, []);
 
     const go = (i) => {
         const el = track.current;

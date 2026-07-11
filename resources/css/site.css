@@ -367,7 +367,8 @@ h3.display,.h3{font-size:clamp(22px,2vw,32px)}
 .milestone__nav{display:flex;gap:12px;justify-content:flex-end;margin-top:26px}
 
 /* Products head + bento */
-.products__head{max-width:720px}
+.products__head{max-width:720px;margin-inline:auto;text-align:center}
+.products__head .eyebrow{display:inline-block;margin-bottom:16px}
 .products__head p{margin:18px 0 26px;color:rgba(255,255,255,.8)}
 .bento{display:grid;grid-template-columns:2fr 1fr;gap:45px!important;margin-top:40px}
 .bcard{position:relative;border-radius:var(--radius-card);padding:34px;min-height:300px;max-height:514px;display:flex;flex-direction:column;background:var(--grad-card-light);color:var(--purple-950);overflow:hidden;transition:transform .3s}
@@ -426,7 +427,7 @@ h3.display,.h3{font-size:clamp(22px,2vw,32px)}
     .footer__brand{justify-content:center}
     .footer__copy{text-align:center}
     .milestone__nav{justify-content:center}
-    .products__head{text-align:left}
+    .products__head{text-align:center}
 }
 /* ==========================================================================
    Overlay navbar (home) + full-image hero
@@ -513,19 +514,22 @@ h3.display,.h3{font-size:clamp(22px,2vw,32px)}
 /* ==========================================================================
    Milestone carousel (Figma: active 1093x654 colour, sides desaturated, bar)
    ========================================================================== */
-.milestone__track{display:flex;gap:24px;overflow-x:auto;scroll-snap-type:x mandatory;scrollbar-width:none;-ms-overflow-style:none;padding-bottom:2px}
+.milestone__track{display:flex;gap:30px;overflow-x:auto;scroll-snap-type:x mandatory;scrollbar-width:none;-ms-overflow-style:none;padding-bottom:2px}
 .milestone__track::-webkit-scrollbar{display:none}
 .milestone__slide{flex:0 0 min(1093px,78%);scroll-snap-align:center}
-.milestone__img{height:clamp(300px,42vw,654px);border-radius:44px;background:linear-gradient(140deg,#8B5FB5,#3A1860);background-size:cover;background-position:center;filter:grayscale(1) brightness(.92);transition:filter .45s ease}
-.milestone__slide.is-active .milestone__img{filter:none}
+.milestone__img{height:clamp(300px,42vw,654px);border-radius:44px;background-color:#5B2D8E;background-image:linear-gradient(140deg,#8B5FB5,#3A1860);background-size:cover;background-position:center;background-blend-mode:luminosity;transition:background-color .45s ease}
+.milestone__slide.is-active .milestone__img{background-blend-mode:normal;background-color:transparent}
 .milestone__bar{width:min(1093px,100%);height:4px;background:#D9D9D9;border-radius:4px;margin:clamp(20px,2.5vw,32px) auto 0;overflow:hidden}
 .milestone__bar-fill{display:block;height:100%;width:25%;background:#CC2A7F;border-radius:4px;transition:width .45s ease}
-.milestone__foot{width:min(1093px,100%);margin:22px auto 0;display:flex;align-items:flex-end;justify-content:space-between;gap:24px}
+.milestone__foot{width:min(1093px,100%);margin:22px auto 0;display:flex;align-items:flex-start;justify-content:space-between;gap:24px}
 .milestone__year{font-size:clamp(48px,6vw,96px);color:#fff;line-height:1}
 .milestone__foot-right{display:flex;flex-direction:column;align-items:flex-end;gap:14px;max-width:540px}
-.milestone__caption{color:rgba(255,255,255,.9);text-align:right;font-size:clamp(16px,1.4vw,20px);line-height:1.5}
+.milestone__caption{color:rgba(255,255,255,.9);text-align:right;font-size:clamp(18px,2.2vw,32px);line-height:1.5;min-height:calc(1.5em * 3)}
 .milestone__nav{display:flex;gap:12px}
 .arrow-btn--sm{width:46px;height:46px}
+.milestone__nav .arrow-btn{width:30px;height:30px;border:0;background:#fff;color:var(--magenta)}
+.milestone__nav .arrow-btn svg{width:14px;height:14px}
+.milestone__nav .arrow-btn:hover{background:var(--magenta);color:#fff;transform:translateY(-2px)}
 @media (max-width:820px){
     .milestone__slide{flex:0 0 88%}
     .milestone__foot{flex-direction:column;align-items:flex-start}
@@ -865,7 +869,7 @@ h3.display,.h3{font-size:clamp(22px,2.2vw,34px)}
 .bcard{border-radius:25px;min-height:0;padding:38px;justify-content:flex-start;background:var(--grad-card-light);color:var(--heading)}
 .bcard--wide{grid-column:1 / -1;aspect-ratio:1615/514}
 .bcard--sq{aspect-ratio:1/1}
-.bento .bcard:not(.bcard--wide):not(.bcard--sq){aspect-ratio:1062/514}
+.bento .bcard:not(.bcard--wide):not(.bcard--sq){aspect-ratio:auto;align-self:stretch}
 .bcard h3{color:var(--heading);font-family:var(--font-display);font-weight:600;font-size:clamp(26px,3.2vw,48px);max-width:12ch}
 .bcard__arrow{color:var(--heading);background:rgba(255,255,255,.6)}
 @media (max-width:760px){.bento{grid-template-columns:1fr}.bcard--wide,.bcard--sq,.bento .bcard:not(.bcard--wide):not(.bcard--sq){aspect-ratio:16/10}}
@@ -887,9 +891,12 @@ h3.display,.h3{font-size:clamp(22px,2.2vw,34px)}
 .ncard__img{aspect-ratio:514/320;border-radius:10px}
 .ncard__body{padding:20px 0 0}
 .ncard hr{border:0;border-top:1px solid #E6E1EE;margin:14px 0;width:100%}
-.ncard__date{color:var(--magenta);font-size:14px;text-transform:uppercase;letter-spacing:.02em;font-weight:600}
-.ncard__title{font-family:var(--font-body);font-weight:600;font-size:clamp(22px,2vw,32px);color:var(--magenta);line-height:1.25}
+.ncard__date{color:var(--magenta);font-size:14px;text-transform:uppercase;letter-spacing:.02em;font-weight:400}
+.ncard__title{font-family:var(--font-body);font-weight:400;font-size:clamp(22px,2vw,32px);color:#444;line-height:1.25;transition:color .2s}
+.ncard:hover .ncard__title{color:var(--magenta)}
 .ncard__excerpt{color:#1E1E1E;font-size:16px;line-height:1.7}
+.ncard__btn{display:inline-flex;align-items:center;justify-content:center;align-self:flex-start;width:113px;height:44px;padding:0 18px;border:1px solid var(--magenta);border-radius:22px;background:#fff;color:var(--magenta);font-family:var(--font-body);font-weight:400;font-size:14px;line-height:1;transition:background .2s,color .2s}
+.ncard__btn:hover,.ncard:hover .ncard__btn{background:var(--magenta);color:#fff}
 
 /* CTA text 64px white */
 .cta h2{color:#fff;font-weight:400;letter-spacing:normal;font-size:clamp(34px,5vw,64px);line-height:1.25;max-width:min(968px,92%)}
