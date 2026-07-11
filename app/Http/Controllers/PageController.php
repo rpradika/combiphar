@@ -100,7 +100,7 @@ class PageController extends Controller
 
         return Inertia::render('About', [
             'page' => $this->page('about'),
-            'milestones' => Milestone::orderBy('sort')->get()->map(fn ($m) => [
+            'milestones' => \App\Models\AboutHistory::orderBy('sort')->get()->map(fn ($m) => [
                 'year' => $m->year, 'caption' => $m->tr('caption'), 'photo' => $this->img($m->photo),
             ]),
             'commissioners' => Person::where('group', 'commissioners')->orderBy('sort')->get()->map($person),

@@ -92,6 +92,22 @@ class CmsSeeder extends Seeder
             'cta_title_en' => "Let's build a healthier tomorrow together with Combiphar.",
         ]);
 
+        // ---- About history (Sejarah) — separate content from Home milestones ----
+        \App\Models\AboutHistory::query()->delete();
+        foreach ([
+            ['1971', 'seed/milestone/pabrik-1971.jpg',
+                'Combiphar didirikan pada tahun 1971 dan tumbuh menjadi perusahaan perawatan kesehatan tepercaya di Indonesia.',
+                'Combiphar was founded in 1971 and grew into a trusted healthcare company in Indonesia.'],
+            ['2012-2017', 'seed/milestone/transformasi.jpg',
+                'Combiphar melakukan transformasi bisnis, bermitra dengan 19 negara. Combiphar mengakuisisi Insto dan Eye Mo dari GSK dan mulai memasuki pasar internasional di Filipina, Singapura, Malaysia, dan Kamboja. Combiphar juga membangun pabrik biosimilar di tahun 2015.',
+                'Combiphar underwent a business transformation, partnering with 19 countries. It acquired Insto and Eye Mo from GSK and entered international markets in the Philippines, Singapore, Malaysia, and Cambodia, and built a biosimilar plant in 2015.'],
+            ['2019', 'seed/milestone/era-gmp.jpg',
+                'Combiphar mengakuisisi Air Mancur Grup untuk lebih menekankan komitmennya Championing A Healthy Tomorrow. Pada tahun yang sama, Combiphar juga mulai memasuki pasar Hong Kong dan Makau.',
+                'Combiphar acquired the Air Mancur Group to strengthen its commitment to Championing A Healthy Tomorrow. In the same year, it entered the Hong Kong and Macau markets.'],
+        ] as $i => [$y, $ph, $cid, $cen]) {
+            \App\Models\AboutHistory::create(['year' => $y, 'photo' => $ph, 'caption_id' => $cid, 'caption_en' => $cen, 'sort' => $i]);
+        }
+
         // ---- Product categories + products ----
         $cats = [
             ['consumer-health', 'Consumer Health', 'Consumer Health', 'Produk kesehatan sehari-hari yang terpercaya untuk seluruh keluarga Indonesia.', 'Everyday trusted health products for every Indonesian family.'],
