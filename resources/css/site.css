@@ -1062,11 +1062,169 @@ h3.display,.h3{font-size:clamp(22px,2vw,32px)}
 /* ==========================================================================
    Careers / Contact
    ========================================================================== */
-.vac-row{display:flex;flex-wrap:wrap;align-items:center;gap:14px 22px;background:#fff;border:1px solid #eee;border-radius:var(--radius-card);padding:24px 28px;box-shadow:var(--shadow-card);cursor:pointer;transition:transform .25s}
-.vac-row:hover{transform:translateY(-3px)}
-.vac-row h3{font-family:var(--font-display);font-weight:700;font-size:20px;color:var(--purple-900);flex:1;min-width:220px;margin:0}
-.vac-row .loc{display:inline-flex;align-items:center;gap:6px;color:var(--text-muted);font-size:14px}
-.vac-row .loc svg{width:18px;height:18px}
+.career-vacancies {
+  padding-top: clamp(54px, 6vw, 92px);
+  padding-bottom: clamp(54px, 6vw, 92px);
+}
+
+.career-vacancies__head {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(320px, 480px);
+  gap: 32px;
+  align-items: start;
+  margin-bottom: 52px;
+}
+
+.career-vacancies__title {
+  margin: 0;
+  font-family: var(--font-body);
+  font-weight: 400;
+  font-size: clamp(34px, 3.5vw, 64px);
+  line-height: 1;
+  color: var(--purple-700);
+}
+
+.career-vacancies__intro {
+  margin: 10px 0 0;
+  font-family: var(--font-body);
+  font-size: clamp(16px, 1.1vw, 22px);
+  line-height: 1.5;
+  color: #292d32;
+  max-width: 34ch;
+}
+
+.career-vacancies__grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 34px 22px;
+}
+
+.vac-card {
+  padding: 0 0 26px;
+  border-bottom: 1px solid #d9d9d9;
+}
+
+.vac-card h3 {
+  margin: 0 0 14px;
+  font-family: var(--font-body);
+  font-weight: 700;
+  font-size: clamp(24px, 1.7vw, 40px);
+  line-height: 1.1;
+  color: var(--magenta);
+  max-width: 12ch;
+}
+
+.vac-card__meta,
+.vac-card__desc {
+  margin: 0;
+  font-family: var(--font-body);
+  font-size: 14px;
+  line-height: 1.65;
+  color: #292d32;
+}
+
+.vac-card__meta {
+  margin-bottom: 8px;
+}
+
+.vac-card__desc {
+  max-width: 42ch;
+}
+
+.vac-card__meta strong,
+.vac-card__desc strong {
+  font-weight: 700;
+  color: #111;
+}
+
+.vac-card__actions {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-top: 22px;
+}
+
+.vac-card__btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 76px;
+  min-height: 34px;
+  padding: 0 18px;
+  border: 1px solid #bd106f;
+  border-radius: 999px;
+  background: transparent;
+  color: #bd106f;
+  font-family: var(--font-body);
+  font-size: 13px;
+  font-weight: 400;
+  line-height: 1;
+  text-decoration: none;
+  transition: background-color .2s ease, color .2s ease, border-color .2s ease;
+}
+
+.vac-card__btn:hover {
+  background: #bd106f;
+  color: #fff;
+}
+
+.career-vacancies__pager {
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  gap: 10px;
+  margin-top: 38px;
+  font-family: var(--font-body);
+  color: #292d32;
+  font-size: 16px;
+}
+
+.career-vacancies__pager button {
+  width: 38px;
+  height: 38px;
+  border: 1px solid #a8a8a8;
+  border-radius: 50%;
+  display: grid;
+  place-items: center;
+  color: #4b4b4b;
+  background: #fff;
+  font-size: 14px;
+  transition: background-color .2s ease, color .2s ease, border-color .2s ease;
+}
+
+.career-vacancies__pager button.is-active {
+  background: var(--magenta);
+  border-color: var(--magenta);
+  color: #fff;
+}
+
+@media (max-width: 1100px) {
+  .career-vacancies__grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .career-vacancies__head {
+    grid-template-columns: 1fr;
+    gap: 18px;
+  }
+
+  .career-vacancies__intro {
+    max-width: 48ch;
+    margin-top: 0;
+  }
+}
+
+@media (max-width: 680px) {
+  .career-vacancies__grid {
+    grid-template-columns: 1fr;
+    gap: 28px;
+  }
+
+  .career-vacancies__pager {
+    justify-content: flex-start;
+    flex-wrap: wrap;
+  }
+}
 .btn--purple{background:var(--purple-600);color:#fff;padding:11px 24px;font-size:14px}
 .btn--purple:hover{box-shadow:0 10px 24px rgba(91,45,142,.3)}
 .steps{display:flex;flex-wrap:wrap;align-items:center;justify-content:center;gap:12px;margin-top:44px}

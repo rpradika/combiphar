@@ -17,13 +17,36 @@ export default function Contact({ page, vacancies }) {
     subject: "",
     message: "",
   })
+  const [vacancyPage, setVacancyPage] = useState(1)
+  const scrollToVacancies = () => {
+    document.querySelector(".career-vacancies")?.scrollIntoView({
+      behavior: "smooth",
+      block: "start",
+    })
+  }
+
+  const VACANCIES_PER_PAGE = 6
+  const totalVacancyPages = Math.max(
+    1,
+    Math.ceil(vacancies.length / VACANCIES_PER_PAGE),
+  )
+  const pagedVacancies = vacancies.slice(
+    (vacancyPage - 1) * VACANCIES_PER_PAGE,
+    vacancyPage * VACANCIES_PER_PAGE,
+  )
 
   const [openFaq, setOpenFaq] = useState(2)
 
   useEffect(() => {
     const els = document.querySelectorAll(".rv")
     els.forEach((el) => el.classList.add("is-in"))
-  }, [tab])
+  }, [tab, vacancyPage])
+
+  useEffect(() => {
+    if (vacancyPage > totalVacancyPages) {
+      setVacancyPage(1)
+    }
+  }, [vacancyPage, totalVacancyPages])
 
   const faqs = [
     {
@@ -106,67 +129,105 @@ export default function Contact({ page, vacancies }) {
 
       {tab === "karir" && (
         <>
-        <section className="section">
-          <div className="container">
-            <div className="sec-head rv">
-              <span className="eyebrow eyebrow--magenta">
-                {en ? "Join Us" : "Bergabung Bersama Kami"}
-              </span>
-              <h2 className="display">Available Vacancies</h2>
-              <p>
-                {en
-                  ? "Join Combiphar in building a healthier future for Indonesia."
-                  : "Bergabunglah bersama Combiphar membangun masa depan yang lebih sehat untuk Indonesia."}
-              </p>
-            </div>
-            <div className="grid" style={{ gap: 14, marginTop: 36}}>
+          <section className="section career-vacancies">
+            <div className="container">
+              <div className="career-vacancies__head rv">
+                <div>
+                  <h2 className="career-vacancies__title">
+                    {en ? "Available Vacancies" : "Lowongan Tersedia"}
+                  </h2>
+                </div>
+
+                <p className="career-vacancies__intro">
+                  {en
+                    ? "Find the right position and start your career journey with Combiphar."
+                    : "Temukan posisi yang tepat dan mulai karirmu bersama Combiphar."}
+                </p>
+              </div>
+
               {vacancies.length === 0 && (
-                <p className="lead">
+                <p className="lead" style={{ marginTop: 36 }}>
                   {en
                     ? "No open positions right now."
                     : "Belum ada lowongan saat ini."}
                 </p>
               )}
-              {vacancies.map((v, i) => (
-                <div className="vac-row rv" key={i} onClick={() => setVac(v)}>
-                  <h3>{v.title}</h3>
-                  {v.location && (
-                    <span className="loc">
-                      <svg
-                        viewBox="0 0 24 24"
-                        fill="none"
-                        stroke="currentColor"
-                        strokeWidth="2"
+
+              <div className="career-vacancies__grid">
+                {pagedVacancies.map((v, i) => (
+                  <article className="vac-card rv" key={i}>
+                    <h3>{v.title}</h3>
+
+                    {v.location && (
+                      <p className="vac-card__meta">
+                        <strong>{en ? "Location:" : "Lokasi:"}</strong>{" "}
+                        {v.location}
+                      </p>
+                    )}
+
+                    {v.description && (
+                      <p className="vac-card__desc">
+                        <strong>
+                          {en ? "Responsibilities:" : "Tanggung Jawab:"}
+                        </strong>{" "}
+                        {v.description}
+                      </p>
+                    )}
+
+                    <div className="vac-card__actions">
+                      <button
+                        type="button"
+                        className="vac-card__btn"
+                        onClick={() => setVac(v)}
                       >
-                        <path d="M12 21s-7-5.2-7-11a7 7 0 0 1 14 0c0 5.8-7 11-7 11Z" />
-                        <circle cx="12" cy="10" r="2.5" />
-                      </svg>
-                      {v.location}
-                    </span>
-                  )}
-                  {v.department && (
-                    <span className="loc">
-                      <svg
-                        viewBox="0 0 24 24"
-                        fill="none"
-                        stroke="currentColor"
-                        strokeWidth="2"
+                        {en ? "Detail" : "Detil"}
+                      </button>
+
+                      <a
+                        className="vac-card__btn"
+                        href={v.applyUrl || "#"}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        onClick={(e) => {
+                          if (!v.applyUrl) e.preventDefault()
+                        }}
                       >
-                        <rect x="3" y="7" width="18" height="13" rx="2" />
-                        <path d="M8 7V5a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2" />
-                      </svg>
-                      {v.department}
-                    </span>
-                  )}
-                  <button type="button" className="btn btn--purple">
-                    {en ? "View Detail" : "Lihat Detail"}
-                  </button>
+                        {en ? "Apply" : "Daftar"}
+                      </a>
+                    </div>
+                  </article>
+                ))}
+              </div>
+
+              {vacancies.length > VACANCIES_PER_PAGE && (
+                <div
+                  className="career-vacancies__pager rv"
+                  aria-label="Vacancy pagination"
+                >
+                  <span>{en ? "Page:" : "Halaman:"}</span>
+
+                  {Array.from({ length: totalVacancyPages }, (_, i) => {
+                    const page = i + 1
+                    return (
+                      <button
+                        key={page}
+                        type="button"
+                        className={vacancyPage === page ? "is-active" : ""}
+                        onClick={() => {
+                          setVacancyPage(page)
+                          scrollToVacancies();
+                        }}
+                        aria-current={vacancyPage === page ? "page" : undefined}
+                      >
+                        {page}
+                      </button>
+                    )
+                  })}
                 </div>
-              ))}
+              )}
             </div>
-          </div>
-        </section>
-            <section className="section recruitment-process-section">
+          </section>
+          <section className="section recruitment-process-section">
             <div className="container">
               <div className="sec-head rv">
                 <h2 className="display">Recruitment Process</h2>
@@ -182,7 +243,7 @@ export default function Contact({ page, vacancies }) {
               </div>
             </div>
           </section>
-          </>
+        </>
       )}
 
       {tab === "kontak" && (
