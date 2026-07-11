@@ -85,7 +85,7 @@ export default function About({ page, milestones, commissioners, directors, awar
                 <section className="section"><div className="container"><div className="vmv-list">
                     {page?.vision && <div className="vmv-row rv"><h3>{en ? 'Our Vision' : 'Visi Kami'}</h3><span className="arrow"><Arrow /></span><p>{page.vision}</p></div>}
                     {page?.mission && <div className="vmv-row rv"><h3>{en ? 'Our Mission' : 'Misi Kami'}</h3><span className="arrow"><Arrow /></span><p>{page.mission}</p></div>}
-                    {page?.values && <div className="vmv-row rv"><h3>{en ? 'Our Values' : 'Nilai Kami'}</h3><span className="arrow"><Arrow /></span><p>{page.values}</p></div>}
+                    {page?.values && <div className="vmv-row rv"><h3>{en ? 'Our Values' : 'Nilai Kami'}</h3><span className="arrow"><Arrow /></span><p dangerouslySetInnerHTML={{ __html: page.values }} /></div>}
                 </div></div></section>
             )}
 

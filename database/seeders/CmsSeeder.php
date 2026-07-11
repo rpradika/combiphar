@@ -78,8 +78,8 @@ class CmsSeeder extends Seeder
             'vision_en' => 'Combiphar’s vision is to become a leading healthcare company that touches consumers’ lives by improving the health of individuals and communities.',
             'mission_id' => 'Mengupayakan tingkat kualitas kesehatan konsumen yang lebih baik melalui produk dan layanan berkualitas serta terjangkau dengan mempromosikan gaya hidup sehat.',
             'mission_en' => 'To improve consumers’ health and quality of life through quality, affordable products and services while promoting a healthy lifestyle.',
-            'values_id' => 'AIM: Antusias dan cerdas dalam mencapai hasil, Integritas, kerjasama sinergis & harmonis, Memenangkan hati pelanggan.',
-            'values_en' => 'AIM: Ambitious and smart in achieving results, Integrity and synergistic, harmonious teamwork, Meeting the hearts of our customers.',
+            'values_id' => '<b>AIM:</b> <b>A</b>ntusias dan cerdas dalam mencapai hasil, <b>I</b>ntegritas, kerjasama sinergis & harmonis, <b>M</b>emenangkan hati pelanggan.',
+            'values_en' => '<b>AIM:</b> <b>A</b>mbitious and smart in achieving results, <b>I</b>ntegrity and synergistic, harmonious teamwork, <b>M</b>eeting the hearts of our customers.',
         ]);
 
         // ---- Home page (hero / manifesto / CTA) ----
