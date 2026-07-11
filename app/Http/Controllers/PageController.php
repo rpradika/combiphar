@@ -53,6 +53,12 @@ class PageController extends Controller
             'stat1Label' => $p->tr('stat1_label'),
             'stat2Value' => $p->stat2_value,
             'stat2Label' => $p->tr('stat2_label'),
+            'manufacturingTitle' => $p->tr('manufacturing_title'),
+            'manufacturingBody' => $p->tr('manufacturing_body'),
+            'manufacturingImage' => $this->img($p->manufacturing_image),
+            'internationalTitle' => $p->tr('international_title'),
+            'internationalBody' => $p->tr('international_body'),
+            'internationalImage' => $this->img($p->international_image),
         ];
     }
 

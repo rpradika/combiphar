@@ -89,6 +89,16 @@ class PageResource extends Resource
                         Forms\Components\TextInput::make('stat2_value')->label('Stat 2 value (e.g. 7)'),
                         Forms\Components\TextInput::make('stat2_label_id')->label('Stat 2 label (ID)'),
                         Forms\Components\TextInput::make('stat2_label_en')->label('Stat 2 label (EN)'),
+                        Forms\Components\FileUpload::make('manufacturing_image')->label('Manufacturing image')->image()->imageEditor(),
+                        Forms\Components\TextInput::make('manufacturing_title_id')->label('Manufacturing title (ID)'),
+                        Forms\Components\TextInput::make('manufacturing_title_en')->label('Manufacturing title (EN)'),
+                        Forms\Components\Textarea::make('manufacturing_body_id')->label('Manufacturing body (ID)')->rows(4),
+                        Forms\Components\Textarea::make('manufacturing_body_en')->label('Manufacturing body (EN)')->rows(4),
+                        Forms\Components\FileUpload::make('international_image')->label('International Business image')->image()->imageEditor(),
+                        Forms\Components\TextInput::make('international_title_id')->label('International title (ID)'),
+                        Forms\Components\TextInput::make('international_title_en')->label('International title (EN)'),
+                        Forms\Components\Textarea::make('international_body_id')->label('International body (ID)')->rows(4),
+                        Forms\Components\Textarea::make('international_body_en')->label('International body (EN)')->rows(4),
                     ]),
             ]);
     }

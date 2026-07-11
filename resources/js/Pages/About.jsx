@@ -6,6 +6,13 @@ import { MilestoneSlider } from '../components/Sliders';
 
 const Arrow = () => <svg viewBox="0 0 48 32" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><path d="M2 8h34m0 0-10-6m10 6-10 6"/><path d="M30 24h14"/></svg>;
 
+// Brand colours for the marketplace tiles (Figma 577:2954).
+const SHOP_COLORS = { shopee: '#F1592D', blibli: '#1B91D0', tokopedia: '#84C468', lazada: '#0C0F84', tiktok: '#000000', orami: '#FF5556' };
+const shopColor = (name = '') => {
+    const key = Object.keys(SHOP_COLORS).find((k) => name.toLowerCase().includes(k));
+    return key ? SHOP_COLORS[key] : '#5B2D8E';
+};
+
 function BoardGrid({ people, onOpen }) {
     const { props: { locale } } = usePage();
     return (
@@ -149,12 +156,39 @@ export default function About({ page, milestones, commissioners, directors, awar
                 </div></section>
             )}
 
+            <section className="section"><div className="container">
+                <div className="about-feature rv">
+                    <div className="about-feature__body">
+                        <span className="eyebrow">ABOUT US</span>
+                        <h2 className="display">{page?.manufacturingTitle || 'Manufacturing Solutions'}</h2>
+                        <p>{page?.manufacturingBody || (en
+                            ? 'Through Manufacturing Solutions, we provide end-to-end manufacturing services for partners who need reliable, high-quality, and scalable production support. Backed by a strong quality system, regulatory expertise, technical capabilities, and integrated manufacturing infrastructure, we help bring products to market efficiently and dependably.'
+                            : 'Melalui Manufacturing Solutions, kami menghadirkan layanan manufaktur end-to-end bagi para mitra yang membutuhkan dukungan produksi yang andal, berkualitas, dan scalable. Didukung oleh sistem kualitas yang kuat, keahlian regulatori, kapabilitas teknis, serta infrastruktur manufaktur yang terintegrasi, kami membantu menghadirkan produk ke pasar secara efisien dan terpercaya.')}</p>
+                    </div>
+                    <div className="about-feature__media">
+                        <img src={page?.manufacturingImage || '/storage/seed/about/manufacturing.jpg'} alt="Manufacturing Solutions" loading="lazy" />
+                    </div>
+                </div>
+                <div className="about-feature about-feature--flip rv">
+                    <div className="about-feature__body">
+                        <span className="eyebrow">ABOUT US</span>
+                        <h2 className="display">{page?.internationalTitle || 'International Business'}</h2>
+                        <p>{page?.internationalBody || (en
+                            ? 'With a growing international footprint, we are expanding our reach into global markets through regulatory capabilities, distribution networks, and deep market understanding. This international presence reflects our commitment to delivering quality health solutions while strengthening the Group’s credibility and growth on a global scale.'
+                            : 'Dengan jejak internasional yang terus berkembang, kami memperluas jangkauan bisnis ke berbagai pasar global melalui kapabilitas regulatori, jaringan distribusi, dan pemahaman pasar yang kuat. Kehadiran internasional ini mencerminkan komitmen kami dalam menghadirkan berbagai solusi kesehatan berkualitas sekaligus memperkuat kredibilitas dan pertumbuhan Grup di tingkat global.')}</p>
+                    </div>
+                    <div className="about-feature__media">
+                        <img src={page?.internationalImage || '/storage/seed/about/international.jpg'} alt="International Business" loading="lazy" />
+                    </div>
+                </div>
+            </div></section>
+
             {shops.length > 0 && (
-                <section className="section darkzone"><div className="container">
-                    <div className="sec-head sec-head--center rv"><span className="eyebrow eyebrow--lavender">{en ? 'Official Store' : 'Belanja Resmi'}</span><h2 className="display">{en ? 'Our Official Online Stores' : 'Toko Online Resmi Kami'}</h2><p>{en ? 'Original Combiphar & Combicare products on your favourite marketplaces.' : 'Produk original Combiphar & Combicare di marketplace favorit Anda.'}</p></div>
-                    <div className="market rv">
+                <section className="section"><div className="container">
+                    <div className="sec-head sec-head--center rv"><span className="eyebrow eyebrow--magenta">{en ? 'Official Store' : 'Belanja Resmi'}</span><h2 className="display">{en ? 'Our Official Online Stores' : 'Toko Online Resmi Kami'}</h2><p>{en ? 'Original Combiphar & Combicare products on your favourite marketplaces.' : 'Produk original Combiphar & Combicare di marketplace favorit Anda.'}</p></div>
+                    <div className="market market--tiles rv">
                         {shops.map((s, i) => (
-                            <a key={i} href={s.url || '#'} target="_blank" rel="noopener noreferrer" aria-label={s.name}>
+                            <a key={i} href={s.url || '#'} target="_blank" rel="noopener noreferrer" aria-label={s.name} style={{ background: shopColor(s.name) }}>
                                 {s.logo ? <img src={s.logo} alt={s.name} /> : s.name}
                             </a>
                         ))}

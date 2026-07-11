@@ -1085,3 +1085,26 @@ html,body{overflow-x:hidden}
     .hero--photo{padding-top:var(--nav-h)}
     .hero--photo .hero__img{width:100%;height:calc(100vh - var(--nav-h));height:calc(100svh - var(--nav-h));object-fit:cover;object-position:center top}
 }
+/* ==========================================================================
+   About — Manufacturing Solutions / International Business (Figma 577:5415/5421)
+   ========================================================================== */
+.about-feature{display:grid;grid-template-columns:1fr 1fr;gap:clamp(32px,4vw,70px);align-items:center}
+.about-feature + .about-feature{margin-top:clamp(48px,6vw,96px)}
+.about-feature__media{aspect-ratio:795/440;border-radius:25px;overflow:hidden;background:var(--surface)}
+.about-feature__media img{width:100%;height:100%;object-fit:cover;display:block}
+.about-feature__body .eyebrow{color:#444;display:inline-block;margin-bottom:14px}
+.about-feature__body h2{color:#5A3D7E;max-width:14ch}
+.about-feature__body p{margin-top:clamp(16px,1.6vw,24px);font-family:var(--font-body);font-weight:300;font-size:clamp(17px,1.25vw,20px);line-height:1.8;color:#1A1A1A;max-width:722px}
+.about-feature--flip .about-feature__body{order:2}
+@media (max-width:820px){
+    .about-feature{grid-template-columns:1fr;gap:24px}
+    .about-feature--flip .about-feature__body{order:0}
+}
+/* About — marketplace tiles (Figma 577:2954) + stat numbers (577:3153) */
+.market--tiles{display:grid;grid-template-columns:repeat(6,1fr);gap:30px;flex-wrap:nowrap}
+.market--tiles a{aspect-ratio:245/246;min-width:0;padding:0;border-radius:10px;display:grid;place-items:center;color:#fff;font-family:var(--font-display);font-weight:700;font-size:clamp(14px,1.2vw,20px);text-align:center;box-shadow:none;transition:transform .25s}
+.market--tiles a:hover{transform:translateY(-4px)}
+.market--tiles a img{max-height:56%;max-width:70%;object-fit:contain}
+@media (max-width:1100px){.market--tiles{grid-template-columns:repeat(3,1fr)}}
+@media (max-width:600px){.market--tiles{grid-template-columns:repeat(2,1fr);gap:16px}}
+.stat-card .num{font-size:clamp(56px,9vw,128px);color:#fff;line-height:1}
