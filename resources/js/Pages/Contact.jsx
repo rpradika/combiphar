@@ -1,5 +1,5 @@
 import { Head, useForm, usePage } from "@inertiajs/react"
-import { useState, useEffect } from "react"
+import { useState, useEffect, Fragment } from "react"
 import SiteLayout from "../Layouts/SiteLayout"
 import Modal from "../components/Modal"
 
@@ -76,12 +76,12 @@ export default function Contact({ page, vacancies }) {
   }
 
   const steps = [
-    "Application Review",
-    "HR Interview",
-    "User Interview",
-    "Assessment",
-    "Offering",
-    "Onboarding",
+    { en: "Application Review", id: "Seleksi CV" },
+    { en: "HR Interview", id: "Wawancara HR" },
+    { en: "User Interview", id: "Wawancara User" },
+    { en: "Assessment", id: "Asesmen" },
+    { en: "Offering", id: "Penawaran" },
+    { en: "Onboarding", id: "Onboarding" },
   ]
 
   return (
@@ -215,7 +215,7 @@ export default function Contact({ page, vacancies }) {
                         className={vacancyPage === page ? "is-active" : ""}
                         onClick={() => {
                           setVacancyPage(page)
-                          scrollToVacancies();
+                          scrollToVacancies()
                         }}
                         aria-current={vacancyPage === page ? "page" : undefined}
                       >
@@ -230,15 +230,41 @@ export default function Contact({ page, vacancies }) {
           <section className="section recruitment-process-section">
             <div className="container">
               <div className="sec-head rv">
-                <h2 className="display">Recruitment Process</h2>
+                <h2 className="display">
+                  {en ? "Recruitment Process" : "Proses Rekrutmen"}
+                </h2>
               </div>
 
               <div className="process-cards rv">
-                {steps.map((s, i) => (
-                  <div className="process-card" key={s}>
-                    <div className="process-card__icon">{i + 1}</div>
-                    <p>{s}</p>
-                  </div>
+                {steps.map((step, i) => (
+                  <Fragment key={`${step.en}-${step.id}-${i}`}>
+                    <div className="process-flow-item">
+                      <div className="process-card">
+                        <div className="process-card__icon">{i + 1}</div>
+                        <p>{en ? step.en : step.id}</p>
+                      </div>
+                    </div>
+
+                    {i < steps.length - 1 && (
+                      <span className="process-arrow" aria-hidden="true">
+                        <svg
+                          width="12"
+                          height="11"
+                          viewBox="0 0 12 11"
+                          fill="none"
+                          xmlns="http://www.w3.org/2000/svg"
+                        >
+                          <path
+                            d="M6.83333 9.75L11 5.375L6.83333 1M11 5.375L1 5.375"
+                            stroke="#C92B82"
+                            strokeWidth="2"
+                            strokeLinecap="round"
+                            strokeLinejoin="round"
+                          />
+                        </svg>
+                      </span>
+                    )}
+                  </Fragment>
                 ))}
               </div>
             </div>
@@ -337,7 +363,9 @@ export default function Contact({ page, vacancies }) {
                       {errors.message && <small>{errors.message}</small>}
                     </div>
 
-                    <div className="full contact-form__meta">
+                    <div className="full contact-form__meta"></div>
+
+                    <div className="full contact-form__actions">
                       <label className="contact-consent">
                         <input type="checkbox" required />
                         <span>
@@ -348,12 +376,10 @@ export default function Contact({ page, vacancies }) {
                           <a href="/privacy-notice">Privacy Policy</a>
                         </span>
                       </label>
-                    </div>
-
-                    <div className="full contact-form__actions">
                       <button
                         className="btn btn--outline contact-submit"
                         type="submit"
+                        style={{ justifyContent: "center" }}
                         disabled={processing}
                       >
                         {en ? "Send Message" : "Kirim Pesan"}
@@ -368,15 +394,41 @@ export default function Contact({ page, vacancies }) {
           <section className="section recruitment-process-section">
             <div className="container">
               <div className="sec-head rv">
-                <h2 className="display">Recruitment Process</h2>
+                <h2 className="display">
+                  {en ? "Recruitment Process" : "Proses Rekrutmen"}
+                </h2>
               </div>
 
               <div className="process-cards rv">
-                {steps.map((s, i) => (
-                  <div className="process-card" key={s}>
-                    <div className="process-card__icon">{i + 1}</div>
-                    <p>{s}</p>
-                  </div>
+                {steps.map((step, i) => (
+                  <Fragment key={`${step.en}-${step.id}-${i}`}>
+                    <div className="process-flow-item">
+                      <div className="process-card">
+                        <div className="process-card__icon">{i + 1}</div>
+                        <p>{en ? step.en : step.id}</p>
+                      </div>
+                    </div>
+
+                    {i < steps.length - 1 && (
+                      <span className="process-arrow" aria-hidden="true">
+                        <svg
+                          width="12"
+                          height="11"
+                          viewBox="0 0 12 11"
+                          fill="none"
+                          xmlns="http://www.w3.org/2000/svg"
+                        >
+                          <path
+                            d="M6.83333 9.75L11 5.375L6.83333 1M11 5.375L1 5.375"
+                            stroke="#C92B82"
+                            strokeWidth="2"
+                            strokeLinecap="round"
+                            strokeLinejoin="round"
+                          />
+                        </svg>
+                      </span>
+                    )}
+                  </Fragment>
                 ))}
               </div>
             </div>
