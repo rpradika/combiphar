@@ -30,7 +30,7 @@ class HandleInertiaRequests extends Middleware
             },
             'nav' => fn () => collect(['about', 'products', 'csr', 'investor', 'news', 'contact'])
                 ->mapWithKeys(fn ($s) => [$s => route($s)])->all(),
-            'homeUrl' => fn () => route('home'),
+            'homeUrl' => fn () => url('/'),
             'flash' => fn () => ['contact_success' => (bool) session('contact_success')],
         ]);
     }

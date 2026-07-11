@@ -35,6 +35,7 @@ export default function SiteLayout({ children, navMode = 'solid' }) {
     const { t, nav, homeUrl, altUrls, locale, routeName } = props;
     const [scrolled, setScrolled] = useState(false);
     const [menuOpen, setMenuOpen] = useState(false);
+    const isHome = url === '/' + locale;
     useReveal(url);
 
     useEffect(() => {
@@ -49,7 +50,11 @@ export default function SiteLayout({ children, navMode = 'solid' }) {
     }, [menuOpen]);
 
     const menu = ['about', 'products', 'csr', 'investor', 'news', 'contact'];
-    const navClass = 'nav' + (navMode === 'overlay' ? ' nav--overlay' : '') + (scrolled ? ' nav--scrolled' : '');
+    const navClass =
+    'nav' +
+    (navMode === 'overlay' ? ' nav--overlay' : '') +
+    (scrolled ? ' nav--scrolled' : '') +
+    (isHome ? ' nav--home' : '');
 
     return (
         <>
