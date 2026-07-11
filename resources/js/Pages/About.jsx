@@ -90,9 +90,9 @@ export default function About({ page, milestones, commissioners, directors, awar
             )}
 
             {(commissioners.length > 0 || directors.length > 0) && (
-                <section className="section section--purple"><div className="container">
+                <section className="section"><div className="container">
                     {commissioners.length > 0 && (<>
-                        <div className="sec-head sec-head--center rv"><span className="eyebrow eyebrow--lavender">{en ? 'Leadership' : 'Kepemimpinan'}</span><h2 className="display">Board of Commissioners</h2></div>
+                        <div className="sec-head sec-head--center rv"><span className="eyebrow eyebrow--magenta">{en ? 'Leadership' : 'Kepemimpinan'}</span><h2 className="display">Board of Commissioners</h2></div>
                         <BoardGrid people={commissioners} onOpen={setBoard} />
                     </>)}
                     {directors.length > 0 && (<>
