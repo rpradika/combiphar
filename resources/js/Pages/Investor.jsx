@@ -215,59 +215,9 @@ function StockSection() {
         <div className="doc-head rv">
           <h2>Stock Information</h2>
         </div>
-
         <article className="stock stock--flat rv">
-          <div className="stock-meta">PT Pyridam Farma Tbk / IDX</div>
-
-          <div className="ir-price">
-            <div className="ticker">PYFA</div>
-            <div className="exchange">Indonesia Stock Exchange</div>
-            <div className="change">-1.24%</div>
-          </div>
-
-          <div className="stock-grid">
-            <div className="stock-cell">
-              <div className="k">Last Price</div>
-              <div className="v">Rp 710</div>
-            </div>
-            <div className="stock-cell">
-              <div className="k">Open</div>
-              <div className="v">Rp 720</div>
-            </div>
-            <div className="stock-cell">
-              <div className="k">High</div>
-              <div className="v">Rp 735</div>
-            </div>
-            <div className="stock-cell">
-              <div className="k">Low</div>
-              <div className="v down">Rp 705</div>
-            </div>
-          </div>
-
-          <div className="stock-chart" aria-hidden="true">
-            <svg viewBox="0 0 1000 220" preserveAspectRatio="none">
-              <defs>
-                <linearGradient id="stockFill" x1="0" y1="0" x2="0" y2="1">
-                  <stop offset="0%" stopColor="rgba(214,46,135,.24)" />
-                  <stop offset="100%" stopColor="rgba(214,46,135,0)" />
-                </linearGradient>
-              </defs>
-              <path
-                d="M0,160 C70,150 110,120 170,126 C240,133 275,90 340,94 C400,98 460,136 520,130 C585,123 635,80 700,86 C770,92 820,146 885,136 C930,130 965,112 1000,116 L1000,220 L0,220 Z"
-                fill="url(#stockFill)"
-              />
-              <path
-                d="M0,160 C70,150 110,120 170,126 C240,133 275,90 340,94 C400,98 460,136 520,130 C585,123 635,80 700,86 C770,92 820,146 885,136 C930,130 965,112 1000,116"
-                fill="none"
-                stroke="currentColor"
-                strokeWidth="4"
-                style={{ color: "var(--magenta)" }}
-              />
-            </svg>
-          </div>
-
           <p className="stock-note">
-            Stock data above is placeholder content for layout preview.
+            Widget here.
           </p>
         </article>
       </div>
@@ -276,12 +226,7 @@ function StockSection() {
 }
 
 function ShareholderSection({ en }) {
-  const shareholders = [
-    { name: "PT Example Investama", portion: "35.20%" },
-    { name: "Public", portion: "28.45%" },
-    { name: "Founding Shareholders", portion: "21.10%" },
-    { name: "Institutional Investors", portion: "15.25%" },
-  ]
+  const shareholders = []
 
   return (
     <section className="section investor-panel">
@@ -429,11 +374,9 @@ export default function Investor({
             : {}
         }
       >
-        <div className="container">
-          <span className="banner__crumb">
-            <a href={homeUrl}>Home</a> &rsaquo; {t.nav.investor}
-          </span>
-          <h1 className="display">Investor Relations</h1>
+        <div className="container banner__inner">
+          <h1 className="display">{page?.bannerTitle || "Investor Relations"}</h1>
+          <p className="banner__intro">{page?.bannerSubtitle || ""}</p>
         </div>
       </section>
 

@@ -146,11 +146,9 @@ export default function Contact({ page, vacancies, faqs }) {
             : {}
         }
       >
-        <div className="container">
-          <span className="banner__crumb">
-            <a href={homeUrl}>Home</a> &rsaquo; {t.nav.contact}
-          </span>
-          <h1 className="display">{t.nav.contact}</h1>
+        <div className="container banner__inner">
+          <h1 className="display">{page?.bannerTitle || t.nav.contact}</h1>
+          <p className="banner__intro">{page?.bannerSubtitle || ""}</p>
         </div>
       </section>
 
