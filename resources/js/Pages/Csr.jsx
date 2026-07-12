@@ -7,7 +7,12 @@ function CsrList({ items, learnMore }) {
             {items.map((p, i) => (
                 <article className={'csr-card rv' + (i % 2 === 0 ? ' csr-card--right' : '')} key={i}>
                     <div className="csr-card__img" style={p.image ? { backgroundImage: `url('${p.image}')` } : {}}></div>
-                    <div className="csr-card__panel">
+                    <div className="csr-card__panel" style={{
+                            backgroundImage: "url('/img/csr-bg.png')",
+                            backgroundSize: "cover",
+                            backgroundPosition: "center",
+                            backgroundRepeat: "no-repeat",
+                        }}>
                         <h3>{p.title}</h3>
                         {p.body && <p>{p.body}</p>}
                         {p.url ? (
