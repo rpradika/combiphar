@@ -5,11 +5,16 @@ services:
       dockerfile: Dockerfile
     image: combiphar-app:latest
     container_name: combiphar-app
+    environment:
+      # Multi-worker built-in server so Livewire/Filament file uploads
+      # don't deadlock (single-threaded `artisan serve` hangs uploads).
+      PHP_CLI_SERVER_WORKERS: "10"
     ports:
       - "80:80"
       - "5173:5173"
     volumes:
       - .:/var/www/html
+      - ./docker/uploads.ini:/usr/local/etc/php/conf.d/uploads.ini
       - vendor:/var/www/html/vendor
       - node_modules:/var/www/html/node_modules
     depends_on:
