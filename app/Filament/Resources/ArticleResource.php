@@ -47,8 +47,10 @@ class ArticleResource extends Resource
                     ->columnSpanFull(),
                 Forms\Components\Select::make('category')
                     ->options([
-                        'edukasi_gaya_hidup' => 'Edukasi dan Gaya Hidup Sehat',
-                        'pembaruan_korporasi' => 'Pembaruan dan Aksi Korporasi',
+                        'pembaruan_korporasi' => 'Investor Update',
+                        'edukasi_gaya_hidup' => 'Health Information',
+                        'informasi_produk' => 'Product Info',
+                        'lainnya' => 'Others',
                     ])
                     ->required()
                     ->default('edukasi_gaya_hidup'),

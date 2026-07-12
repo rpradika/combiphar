@@ -2,7 +2,10 @@ import { Head, Link, usePage } from '@inertiajs/react';
 import { useState, useEffect } from 'react';
 import SiteLayout from '../Layouts/SiteLayout';
 
-function Cards({ items, readMore }) {
+const PER_PAGE = 9;
+
+function Cards({ items, readMore, empty }) {
+    if (!items.length) return <p className="lead">{empty}</p>;
     return (
         <div className="grid grid--3" style={{ marginTop: 40 }}>
             {items.map((a) => (
@@ -13,7 +16,7 @@ function Cards({ items, readMore }) {
                         <h3 className="ncard__title">{a.title}</h3>
                         <hr />
                         <p className="ncard__excerpt">{a.excerpt}</p>
-                        <Link className="btn btn--fill" href={a.url}>{readMore}</Link>
+                        <Link className="ncard__btn" href={a.url}>{readMore}</Link>
                     </div>
                 </article>
             ))}
@@ -21,14 +24,64 @@ function Cards({ items, readMore }) {
     );
 }
 
-export default function News({ page, health, corporate }) {
+// Windowed page list: always 1 and last, plus current ±1, with ellipses.
+function pageList(total, current) {
+    const out = [];
+    for (let i = 1; i <= total; i++) {
+        if (i === 1 || i === total || (i >= current - 1 && i <= current + 1)) {
+            out.push(i);
+        } else if (out[out.length - 1] !== '…') {
+            out.push('…');
+        }
+    }
+    return out;
+}
+
+export default function News({ page, investor, health, product, others }) {
     const { props: { t, locale, homeUrl } } = usePage();
     const en = locale === 'en';
-    const [tab, setTab] = useState('health');
+    const [tab, setTab] = useState('investor');
+    const [pageNum, setPageNum] = useState(1);
+
+    const tabs = [
+        {
+            key: 'investor', label: 'Investor Update', items: investor,
+            desc: en
+                ? 'The latest corporate updates and investor information from Combiphar.'
+                : 'Pembaruan korporasi dan informasi investor terkini dari Combiphar.',
+        },
+        {
+            key: 'health', label: en ? 'Health Information' : 'Informasi Kesehatan', items: health,
+            desc: en
+                ? 'The latest health information and education to support a healthy lifestyle.'
+                : 'Informasi dan edukasi kesehatan terkini untuk mendukung gaya hidup sehat.',
+        },
+        {
+            key: 'product', label: en ? 'Product Info' : 'Info Produk', items: product,
+            desc: en
+                ? 'News and information about Combiphar products.'
+                : 'Berita dan informasi seputar produk Combiphar.',
+        },
+        {
+            key: 'others', label: 'Others', items: others,
+            desc: en
+                ? 'Other news and information from Combiphar.'
+                : 'Berita dan informasi lainnya dari Combiphar.',
+        },
+    ];
+
+    const active = tabs.find((x) => x.key === tab) || tabs[0];
+    const totalPages = Math.max(1, Math.ceil(active.items.length / PER_PAGE));
+    const paged = active.items.slice((pageNum - 1) * PER_PAGE, pageNum * PER_PAGE);
+
+    // Reveal-on-scroll + clamp page when tab/count changes.
     useEffect(() => {
-        const els = document.querySelectorAll(".rv")
-        els.forEach((el) => el.classList.add("is-in"))
-      }, [tab])
+        document.querySelectorAll('.rv').forEach((el) => el.classList.add('is-in'));
+    }, [tab, pageNum]);
+    useEffect(() => { setPageNum(1); }, [tab]);
+
+    const readMore = en ? 'Read More' : 'Selengkapnya';
+    const empty = en ? 'No articles yet.' : 'Belum ada artikel.';
 
     return (
         <>
@@ -36,31 +89,49 @@ export default function News({ page, health, corporate }) {
 
             <section className="banner banner--about" style={page?.bannerImage ? { backgroundImage: `url('${page.bannerImage}')`, backgroundSize: 'cover', backgroundPosition: 'center' } : {}}>
                 <div className="container">
-                    <span className="banner__crumb"><a href={homeUrl}>Home</a> &rsaquo; {t.nav.news}</span>
-                    <h1 className="display">{page?.bannerTitle || (en ? 'News & Health Info' : 'Berita & Info Kesehatan')}</h1>
+                    <h1 className="display">{page?.bannerTitle || (en ? 'Latest News' : 'Berita Terkini')}</h1>
                 </div>
             </section>
 
             <nav className="subnav" aria-label="News categories">
                 <div className="container subnav__inner">
-                    <button type="button" className={tab === 'health' ? 'on' : ''} onClick={() => setTab('health')}>{en ? 'Health Info' : 'Info Kesehatan'}</button>
-                    <button type="button" className={tab === 'invest' ? 'on' : ''} onClick={() => setTab('invest')}>Investor Updates</button>
+                    {tabs.map((x) => (
+                        <button key={x.key} type="button" className={tab === x.key ? 'on' : ''} onClick={() => setTab(x.key)}>{x.label}</button>
+                    ))}
                 </div>
             </nav>
 
-            {tab === 'health' && (
-                <section className="section"><div className="container">
-                    <div className="sec-head rv"><span className="eyebrow eyebrow--magenta">{en ? 'Health Info' : 'Info Kesehatan'}</span><h2 className="display">{en ? 'Education & Healthy Lifestyle' : 'Edukasi & Gaya Hidup Sehat'}</h2></div>
-                    {health.length > 0 ? <Cards items={health} readMore={en ? 'Read More' : 'Selengkapnya'} /> : <p className="lead">{en ? 'No articles yet.' : 'Belum ada artikel.'}</p>}
-                </div></section>
-            )}
+            <section className="section">
+                <div className="container">
+                    <div className="sec-head sec-head--product rv">
+                        <h2 className="display">{active.label}</h2>
+                        <p>{active.desc}</p>
+                    </div>
 
-            {tab === 'invest' && (
-                <section className="section" style={{ background: 'var(--surface)' }}><div className="container">
-                    <div className="sec-head rv"><span className="eyebrow eyebrow--magenta">Investor Updates</span><h2 className="display">{en ? 'Corporate Updates & Actions' : 'Pembaruan & Aksi Korporasi'}</h2></div>
-                    {corporate.length > 0 ? <Cards items={corporate} readMore={en ? 'Read More' : 'Selengkapnya'} /> : <p className="lead">{en ? 'No updates yet.' : 'Belum ada pembaruan.'}</p>}
-                </div></section>
-            )}
+                    <Cards items={paged} readMore={readMore} empty={empty} />
+
+                    {totalPages > 1 && (
+                        <div className="news-pager rv" aria-label="Pagination">
+                            <span className="news-pager__label">{en ? 'Page:' : 'Halaman:'}</span>
+                            {pageList(totalPages, pageNum).map((p, i) =>
+                                p === '…' ? (
+                                    <span key={`gap-${i}`} className="news-pager__gap">…</span>
+                                ) : (
+                                    <button
+                                        key={p}
+                                        type="button"
+                                        className={'news-pager__num' + (pageNum === p ? ' is-active' : '')}
+                                        onClick={() => setPageNum(p)}
+                                        aria-current={pageNum === p ? 'page' : undefined}
+                                    >
+                                        {p}
+                                    </button>
+                                ),
+                            )}
+                        </div>
+                    )}
+                </div>
+            </section>
         </>
     );
 }

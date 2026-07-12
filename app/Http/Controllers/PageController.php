@@ -164,11 +164,14 @@ class PageController extends Controller
     public function news()
     {
         $articles = Article::published()->latest('published_at')->get();
+        $byCat = fn (string $c) => $articles->where('category', $c)->values()->map(fn ($a) => $this->articleCard($a));
 
         return Inertia::render('News', [
             'page' => $this->page('news'),
-            'health' => $articles->where('category', 'edukasi_gaya_hidup')->values()->map(fn ($a) => $this->articleCard($a)),
-            'corporate' => $articles->where('category', 'pembaruan_korporasi')->values()->map(fn ($a) => $this->articleCard($a)),
+            'investor' => $byCat('pembaruan_korporasi'),
+            'health' => $byCat('edukasi_gaya_hidup'),
+            'product' => $byCat('informasi_produk'),
+            'others' => $byCat('lainnya'),
         ]);
     }
 
@@ -180,6 +183,7 @@ class PageController extends Controller
             'article' => array_merge($this->articleCard($article), [
                 'body' => $article->tr('body'),
                 'category' => $article->category,
+                'datetime' => optional($article->published_at)->translatedFormat('l, j F Y - g:i A'),
             ]),
             'others' => Article::published()->where('id', '!=', $article->id)->latest('published_at')->take(4)->get()
                 ->map(fn ($a) => $this->articleCard($a)),
