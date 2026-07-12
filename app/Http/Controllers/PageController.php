@@ -165,6 +165,7 @@ class PageController extends Controller
         $all = CsrProgram::orderBy('sort')->get();
         $map = fn ($rows) => $rows->values()->map(fn ($p) => [
             'title' => $p->tr('title'), 'body' => $p->tr('body'), 'image' => $this->img($p->image),
+            'link' => $p->link,
         ]);
 
         return Inertia::render('Csr', [

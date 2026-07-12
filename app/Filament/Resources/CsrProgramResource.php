@@ -48,6 +48,10 @@ class CsrProgramResource extends Resource
                     ->columnSpanFull(),
                 Forms\Components\FileUpload::make('image')
                     ->image(),
+                Forms\Components\TextInput::make('link')
+                    ->label('Link "Pelajari Lebih Lanjut" (opsional)')
+                    ->url()
+                    ->maxLength(255),
                 Forms\Components\TextInput::make('sort')
                     ->required()
                     ->numeric()
