@@ -22,8 +22,10 @@ function BoardGrid({ people, onOpen }) {
                     <div className="board-card__photo" style={p.photo ? { backgroundImage: `url('${p.photo}')` } : {}}></div>
                     <div className="board-card__info">
                         <h4>{p.name}</h4>
-                        <span className="board-card__role">{p.role}</span>
-                        <span className="board-card__bio-btn">{locale === 'en' ? 'Biography' : 'Biografi'}</span>
+                        <div className="board-card__swap">
+                            <span className="board-card__role">{p.role}</span>
+                            <span className="board-card__bio-btn">{locale === 'en' ? 'Biography' : 'Biografi'}</span>
+                        </div>
                     </div>
                 </div>
             ))}
@@ -44,11 +46,11 @@ export default function About({ page, milestones, commissioners, directors, awar
     const visibleOffices = offices.filter((o) => (!city || o.city === city) && (!cat || o.category === cat));
 
     const pins = [
-        { l: '15.6%', tp: '38%', c: '#ffffff', label: 'North America' },
-        { l: '48.4%', tp: '44%', c: '#DCC4F6', label: 'Africa' },
-        { l: '76.5%', tp: '41%', c: '#F46EB5', label: 'Asia' },
-        { l: '90%', tp: '63%', c: '#F46EB5', label: 'Indonesia' },
-        { l: '92.5%', tp: '79%', c: '#9D7EC6', label: 'Australia' },
+        { l: '15.6%', tp: '50%', icon: '/img/pin-northamerica.svg', label: 'North America' },
+        { l: '48%', tp: '52%', icon: '/img/pin-africa.svg', label: 'Africa' },
+        { l: '76.5%', tp: '48%', icon: '/img/pin-asia.svg', label: 'Asia' },
+        { l: '81%', tp: '62%', icon: '/img/pin-asia.svg', label: 'Indonesia' },
+        { l: '92%', tp: '70%', icon: '/img/pin-australia.svg', label: 'Australia' },
     ];
 
     return (
@@ -122,21 +124,20 @@ export default function About({ page, milestones, commissioners, directors, awar
             )}
 
             <section className="section" style={{ background: 'var(--surface)' }}><div className="container">
-                <div className="sec-head sec-head--center rv"><span className="eyebrow eyebrow--magenta">{en ? 'Global Reach' : 'Jangkauan Global'}</span><h2 className="display">{en ? 'Our Presence' : 'Kehadiran Kami'}</h2><p>{en ? 'From Indonesia to the world - click a pin to see our production facilities.' : 'Dari Indonesia untuk dunia - klik pin untuk melihat fasilitas produksi kami.'}</p></div>
+                <div className="sec-head sec-head--center rv"><span className="eyebrow eyebrow--magenta">{en ? 'Our Scale' : 'Skala Kami'}</span><h2 className="display">{en ? 'Our Presence' : 'Kehadiran Kami'}</h2><p>{page?.presenceDesc || (en ? 'From Indonesia to the world — our products and partnerships now reach communities across four continents.' : 'Setiap penghargaan adalah cerminan kepercayaan, dari konsumen, investor, dan mitra yang telah menemani perjalanan kami sejak 2016.')}</p></div>
                 <div className="world-map rv">
                     <img className="world-map__img" src="/img/world-map.png" alt={en ? 'Combiphar global presence map' : 'Peta kehadiran global Combiphar'} />
                     {pins.map((p, i) => (
-                        <button key={i} type="button" className="map-pin" style={{ left: p.l, top: p.tp }} onClick={() => setFacOpen(true)}>
-                            <i style={{ '--pin': p.c }}></i><span>{p.label}</span>
+                        <button key={i} type="button" className="map-pin" style={{ left: p.l, top: p.tp }} onClick={() => setFacOpen(true)} aria-label={p.label}>
+                            <img src={p.icon} alt="" />
                         </button>
                     ))}
                 </div>
                 <div className="map-legend rv">
-                    <span><i style={{ background: '#F46EB5' }}></i>Asia</span>
-                    <span><i style={{ background: '#9D7EC6' }}></i>Australia</span>
-                    <span><i style={{ background: '#DCC4F6' }}></i>Africa</span>
-                    <span><i style={{ background: '#fff', border: '1px solid #ccc' }}></i>North America</span>
-                    <button type="button" className="btn btn--outline" style={{ marginLeft: 'auto' }} onClick={() => setFacOpen(true)}>{en ? 'View Production Facilities' : 'Lihat Fasilitas Produksi'}</button>
+                    <span className="map-legend__item"><img src="/img/pin-northamerica.svg" alt="" /><span><b>North America:</b> Mexico</span></span>
+                    <span className="map-legend__item"><img src="/img/pin-africa.svg" alt="" /><span><b>Africa:</b> Togo, Nigeria</span></span>
+                    <span className="map-legend__item"><img src="/img/pin-asia.svg" alt="" /><span><b>Asia:</b> Indonesia, Myanmar, Singapore, Taiwan, Malaysia, Philipines, Cambodia, Brunei Darussalam</span></span>
+                    <span className="map-legend__item"><img src="/img/pin-australia.svg" alt="" /><span><b>Australia:</b> Australia, New Zealand</span></span>
                 </div>
             </div></section>
 
@@ -151,7 +152,7 @@ export default function About({ page, milestones, commissioners, directors, awar
                     </div>
                     <div className="grid grid--4" style={{ marginTop: 24 }}>
                         {visibleOffices.map((o, i) => (
-                            <div className="office-card rv" key={i}>
+                            <div className="office-card" key={i}>
                                 <h4>{o.name}</h4>
                                 {o.category && <span className="office-card__label">{o.category}</span>}
                                 <p>{o.description}{o.phone && <><br /><strong>Phone:</strong> {o.phone}</>}</p>

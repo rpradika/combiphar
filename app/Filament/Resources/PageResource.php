@@ -89,6 +89,8 @@ class PageResource extends Resource
                         Forms\Components\Textarea::make('mission_en')->label('Mission (EN)')->rows(2),
                         Forms\Components\Textarea::make('values_id')->label('Nilai (ID)')->rows(2),
                         Forms\Components\Textarea::make('values_en')->label('Values (EN)')->rows(2),
+                        Forms\Components\Textarea::make('presence_desc_id')->label('Kehadiran Kami — deskripsi (ID)')->rows(2),
+                        Forms\Components\Textarea::make('presence_desc_en')->label('Our Presence — description (EN)')->rows(2),
                         Forms\Components\TextInput::make('stat1_value')->label('Stat 1 value (e.g. 1,600+)'),
                         Forms\Components\TextInput::make('stat1_label_id')->label('Stat 1 label (ID)'),
                         Forms\Components\TextInput::make('stat1_label_en')->label('Stat 1 label (EN)'),
