@@ -146,9 +146,9 @@ export default function Contact({ page, vacancies, faqs }) {
             : {}
         }
       >
-        <div className="container banner__inner">
+        <div className="container banner__row">
           <h1 className="display">{page?.bannerTitle || t.nav.contact}</h1>
-          <p className="banner__intro">{page?.bannerSubtitle || ""}</p>
+          <p className="banner__row-sub">{page?.bannerSubtitle || ""}</p>
         </div>
       </section>
 

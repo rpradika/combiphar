@@ -58,7 +58,7 @@ export default function About({ page, milestones, commissioners, directors, awar
             <Head title={page?.metaTitle || `${t.nav.about} — Combiphar`} />
 
             <section className="banner banner--about" style={page?.bannerImage ? { backgroundImage: `url('${page.bannerImage}')`, backgroundSize: 'cover', backgroundPosition: 'center' } : {}}>
-                <div className="container banner__inner">
+                <div className="container banner__row">
                     <p className="banner__intro">{page?.bannerSubtitle || (en
                         ? 'With over 53 years of professional experience in the pharmaceutical industry, marked by sustainable growth and the acquisition of major companies, Combiphar represents the purpose of:'
                         : 'Dengan pengalaman lebih dari 53 tahun di industri farmasi, ditandai dengan pertumbuhan berkelanjutan dan akuisisi berbagai perusahaan besar, Combiphar mewakili tujuan:')}</p>

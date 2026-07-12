@@ -595,10 +595,20 @@ h3.display,.h3{font-size:clamp(22px,2vw,32px)}
 .banner__crumb{display:block;color:rgba(255,255,255,.85);font-size:14px;margin-bottom:14px}
 .banner__crumb a:hover{color:#fff;text-decoration:underline}
 /* Products banner: title left + subtitle right (Figma) */
-.banner__row{display:flex;justify-content:space-between;align-items:flex-end;gap:clamp(24px,4vw,80px);flex-wrap:wrap}
+.banner__row{
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  align-items: end;
+  gap: clamp(24px, 4vw, 80px);
+}
 .banner__row h1{margin:0}
 .banner__row-sub{max-width:600px;margin:0;color:#fff;font-family:var(--font-body);font-weight:300;font-size:clamp(14px,1.1vw,16px);line-height:1.85}
-@media (max-width:760px){.banner__row{flex-direction:column;align-items:flex-start;gap:16px}.banner__row-sub{max-width:none}}
+@media (max-width:760px){.banner__row{
+    grid-template-columns: 1fr;
+    align-items: start;
+    gap: 12px;
+    text-align: center;
+  }.banner__row-sub{max-width:none}}
 /* Products: per-category hero band (image + name) + centered intro */
 .cat-hero{position:relative;min-height:clamp(260px,32vw,540px);display:grid;place-items:center;text-align:center;background:var(--grad-brand);background-size:cover;background-position:center}
 .cat-hero__overlay{position:absolute;inset:0;background:linear-gradient(180deg,rgba(42,0,90,.18),rgba(42,0,90,.5))}
@@ -1103,9 +1113,9 @@ h3.display,.h3{font-size:clamp(22px,2vw,32px)}
 .hub-card h3 {
   margin: 0;
   color: #fff;
-  font-family: var(--font-display);
-  font-weight: 500;
-  font-size: clamp(24px, 2vw, 34px);
+  font-family: var(--font-body);
+  font-weight: 400;
+  font-size: clamp(24px, 2vw, 48px);
   line-height: 1.08;
   max-width: 8ch;
 }
