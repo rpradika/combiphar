@@ -23,7 +23,16 @@ class PageController extends Controller
 {
     private function img(?string $path): ?string
     {
-        return $path ? Storage::url($path) : null;
+        if (! $path) {
+            return null;
+        }
+
+        // Imported products may store an absolute image URL (e.g. combiphar.com) — use as-is.
+        if (str_starts_with($path, 'http://') || str_starts_with($path, 'https://')) {
+            return $path;
+        }
+
+        return Storage::url($path);
     }
 
     private function page(string $slug): ?array
