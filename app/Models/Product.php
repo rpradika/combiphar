@@ -12,6 +12,10 @@ class Product extends Model
 
     protected $guarded = [];
 
+    protected $casts = [
+        'shop_ids' => 'array',
+    ];
+
     public function category(): BelongsTo
     {
         return $this->belongsTo(ProductCategory::class, 'product_category_id');

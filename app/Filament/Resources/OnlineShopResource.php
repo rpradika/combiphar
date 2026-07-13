@@ -34,8 +34,10 @@ class OnlineShopResource extends Resource
                     ->maxLength(255),
                 Forms\Components\TextInput::make('url')
                     ->maxLength(255),
-                Forms\Components\TextInput::make('logo')
-                    ->maxLength(255),
+                Forms\Components\FileUpload::make('logo')
+                    ->label('Logo')
+                    ->image()
+                    ->imageEditor(),
                 Forms\Components\Hidden::make('sort')->default(fn () => (static::getModel()::max('sort') ?? 0) + 1),
             ]);
     }
@@ -48,8 +50,7 @@ class OnlineShopResource extends Resource
                     ->searchable(),
                 Tables\Columns\TextColumn::make('url')
                     ->searchable(),
-                Tables\Columns\TextColumn::make('logo')
-                    ->searchable(),
+                Tables\Columns\ImageColumn::make('logo'),
                 Tables\Columns\TextColumn::make('sort')
                     ->numeric()
                     ->sortable(),

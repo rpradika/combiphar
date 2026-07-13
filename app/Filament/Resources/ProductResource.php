@@ -58,12 +58,31 @@ class ProductResource extends Resource
                     ->maxLength(255),
                 Forms\Components\TextInput::make('name_en')
                     ->maxLength(255),
+                Forms\Components\Textarea::make('summary_id')
+                    ->label('Deskripsi Singkat (Kartu) — ID')
+                    ->helperText('Teks pendek yang tampil di kartu produk (desktop).')
+                    ->rows(2)
+                    ->columnSpanFull(),
+                Forms\Components\Textarea::make('summary_en')
+                    ->label('Deskripsi Singkat (Kartu) — EN')
+                    ->rows(2)
+                    ->columnSpanFull(),
                 Forms\Components\Textarea::make('description_id')
+                    ->label('Deskripsi (Popup Detail) — ID')
                     ->columnSpanFull(),
                 Forms\Components\Textarea::make('description_en')
+                    ->label('Deskripsi (Popup Detail) — EN')
                     ->columnSpanFull(),
                 Forms\Components\FileUpload::make('image')
                     ->image(),
+                Forms\Components\CheckboxList::make('shop_ids')
+                    ->label('Toko Online')
+                    ->helperText('Pilih toko tempat produk ini tersedia. Semua toko dipilih secara default.')
+                    ->options(fn () => \App\Models\OnlineShop::orderBy('sort')->pluck('name', 'id'))
+                    ->formatStateUsing(fn ($state) => $state ?? \App\Models\OnlineShop::orderBy('sort')->pluck('id')->all())
+                    ->bulkToggleable()
+                    ->columns(2)
+                    ->columnSpanFull(),
                 Forms\Components\Hidden::make('sort')->default(fn () => (static::getModel()::max('sort') ?? 0) + 1),
             ]);
     }

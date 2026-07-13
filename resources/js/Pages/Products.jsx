@@ -3,7 +3,7 @@ import { useMemo, useState, useEffect } from "react"
 import SiteLayout from "../Layouts/SiteLayout"
 import Modal from "../components/Modal"
 
-export default function Products({ page, categories, shops }) {
+export default function Products({ page, categories }) {
   const {
     props: { t, locale, homeUrl },
   } = usePage()
@@ -215,7 +215,7 @@ export default function Products({ page, categories, shops }) {
                 >
                   <div className="pcard__body">
                     <h3>{p.name}</h3>
-                    {p.description && <p className="pcard__desc">{p.description}</p>}
+                    {p.summary && <p className="pcard__desc">{p.summary}</p>}
                   </div>
 
                   <div className="pcard__img">
@@ -280,17 +280,18 @@ export default function Products({ page, categories, shops }) {
             <div className="pmodal__panel">
               <h3>{detail.name}</h3>
               {detail.description && <p>{detail.description}</p>}
-              {shops.length > 0 && (
+              {detail.shops?.length > 0 && (
                 <div className="pmodal__shops">
                   <h4>{en ? "Available at" : "Tersedia di"}</h4>
-                  <div className="market market--sm">
-                    {shops.map((s, i) => (
+                  <div className="market market--sm market--color">
+                    {detail.shops.map((s, i) => (
                       <a
                         key={i}
                         href={s.url || "#"}
                         target="_blank"
                         rel="noopener noreferrer"
                         aria-label={s.name}
+                        style={{ background: s.color }}
                       >
                         {s.logo ? <img src={s.logo} alt={s.name} /> : s.name}
                       </a>

@@ -134,8 +134,37 @@ class PageController extends Controller
         ]);
     }
 
+    // Brand colours for the marketplace tiles (mirror of About.jsx SHOP_COLORS, Figma 577:2954).
+    private function shopColor(?string $name): string
+    {
+        $colors = ['shopee' => '#F1592D', 'blibli' => '#1B91D0', 'tokopedia' => '#84C468', 'lazada' => '#0C0F84', 'tiktok' => '#000000', 'orami' => '#FF5556'];
+        $n = strtolower($name ?? '');
+        foreach ($colors as $key => $hex) {
+            if (str_contains($n, $key)) {
+                return $hex;
+            }
+        }
+
+        return '#5B2D8E';
+    }
+
     public function products()
     {
+        $shops = OnlineShop::orderBy('sort')->get();
+        $shopArr = fn ($s) => ['name' => $s->name, 'url' => $s->url, 'logo' => $this->img($s->logo), 'color' => $this->shopColor($s->name)];
+        // Each product shows only its selected shops; null shop_ids = available at all shops.
+        $product = function ($p) use ($shops, $shopArr) {
+            $selected = $p->shop_ids;
+            $list = is_array($selected) ? $shops->whereIn('id', $selected) : $shops;
+
+            return [
+                'name' => $p->tr('name'),
+                'summary' => $p->tr('summary') ?: $p->tr('description'),
+                'description' => $p->tr('description'), 'image' => $this->img($p->image),
+                'shops' => $list->map($shopArr)->values(),
+            ];
+        };
+
         return Inertia::render('Products', [
             'page' => $this->page('products'),
             'categories' => ProductCategory::whereNull('parent_id')
@@ -148,18 +177,13 @@ class PageController extends Controller
                 ->map(fn ($c) => [
                     'slug' => $c->slug, 'name' => $c->tr('name'), 'description' => $c->tr('description'),
                     'image' => $this->img($c->image),
-                    'products' => $c->products->map(fn ($p) => [
-                        'name' => $p->tr('name'), 'description' => $p->tr('description'), 'image' => $this->img($p->image),
-                    ]),
+                    'products' => $c->products->map($product),
                     'children' => $c->children->map(fn ($ch) => [
                         'slug' => $ch->slug, 'name' => $ch->tr('name'), 'description' => $ch->tr('description'),
                         'image' => $this->img($ch->image),
-                        'products' => $ch->products->map(fn ($p) => [
-                            'name' => $p->tr('name'), 'description' => $p->tr('description'), 'image' => $this->img($p->image),
-                        ]),
+                        'products' => $ch->products->map($product),
                     ]),
                 ]),
-            'shops' => $this->shops(),
         ]);
     }
 
