@@ -7,7 +7,15 @@
 @font-face {
   font-family: 'FS Albert';
   src: url('/fonts/FSAlbert-Regular.otf') format('opentype');
-  font-weight: 400 700;
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'FS Albert';
+  src: url('/fonts/FSAlbert-Bold.otf') format('opentype');
+  font-weight: 700;
   font-style: normal;
   font-display: swap;
 }
@@ -403,13 +411,93 @@ h3.display,.h3{font-size:clamp(22px,2vw,32px)}
 @media(max-width:820px){.impact-card{grid-template-columns:1fr}}
 
 /* Manifesto */
-.manifesto{position:relative;min-height:64vh;display:flex;align-items:center;justify-content:center;text-align:center;color:#fff;background:linear-gradient(140deg,#3A1860,#5B2D8E 55%,#2A005A);background-size:cover;background-position:center}
-.manifesto__content{position:relative;z-index:2;display:flex;flex-direction:column;align-items:center;gap:22px}
-.manifesto__content h2{max-width:16ch;font-size:clamp(32px,3.6vw,64px)}
-.manifesto__play{width:78px;height:78px;border-radius:50%;background:rgba(255,255,255,.15);border:1.5px solid rgba(255,255,255,.6);display:grid;place-items:center;color:#fff;transition:transform .2s,background .2s,border-color .2s}
-.manifesto__play:hover{transform:scale(1.08);background:var(--magenta);border-color:var(--magenta)}
-.manifesto__play svg{width:30px;height:30px}
-.manifesto__label{font-family:var(--font-display);font-weight:600;letter-spacing:.08em;text-transform:uppercase;font-size:13px;opacity:.9}
+.manifesto{
+  position: relative;
+  overflow: hidden;
+}
+
+.manifesto__img,
+.manifesto__video,
+.manifesto__iframe{
+  display: block;
+  width: 100%;
+  height: 100%;
+}
+
+.manifesto__video,
+.manifesto__iframe{
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  background: #000;
+  border: 0;
+}
+
+.manifesto__content{
+  position: absolute;
+  inset: 0;
+  z-index: 2;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 18px;
+  text-align: center;
+}
+
+.manifesto__play{
+  display: inline-grid;
+  place-items: center;
+  width: 65px;
+  height: 65px;
+  padding: 0;
+  border: 0;
+  background: transparent;
+  cursor: pointer;
+}
+
+.manifesto__play svg{
+  display: block;
+  width: 65px;
+  height: 65px;
+}
+
+.manifesto.is-playing .manifesto__content{
+  display: none;
+}
+
+.manifesto__label{
+  font-family: var(--font-display);
+  font-weight: 400;
+  font-size: 16px;
+  line-height: 1;
+  letter-spacing: 0;
+  text-align: center;
+  color: #fff;
+  margin-top: 6px;
+}
+
+.manifesto__content h2{
+  max-width: 16ch;
+  margin: 0;
+  font-family: var(--font-display);
+  font-weight: 400;
+  font-size: clamp(32px, 3.6vw, 64px);
+  line-height: 1;
+  letter-spacing: 0;
+  text-align: center;
+  color: #fff;
+}
+/* Manifesto full-image (uncropped, height follows the image) */
+.manifesto--photo{
+  aspect-ratio: auto;
+  min-height: 0;
+  background: var(--grad-section-dark);
+  display: block;
+  padding: 0;
+}
+.manifesto__img{display:block;width:100%;height:100%;object-fit:cover;object-position:bottom}
+.manifesto--photo .manifesto__content{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center}
 
 /* Darkzone */
 .darkzone{background:var(--grad-section-dark);color:#fff}
@@ -567,10 +655,6 @@ h3.display,.h3{font-size:clamp(22px,2vw,32px)}
 @media (max-width:820px){
     .manifesto{aspect-ratio:auto;min-height:54vh}
 }
-/* Manifesto full-image (uncropped, height follows the image) */
-.manifesto--photo{aspect-ratio:auto;min-height:0;background:none;display:block;padding:0}
-.manifesto__img{display:block;width:100%;height:auto}
-.manifesto--photo .manifesto__content{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center}
 /* ==========================================================================
    Milestone carousel (Figma: active 1093x654 colour, sides desaturated, bar)
    ========================================================================== */
