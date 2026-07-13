@@ -264,9 +264,11 @@ export default function Products({ page, categories, shops }) {
         open={!!detail}
         onClose={() => setDetail(null)}
         closeLabel={t.close}
+        wide
+        flush
       >
         {detail && (
-          <div className="pmodal__grid">
+          <div className="pmodal">
             <div
               className="pmodal__img"
               style={
@@ -275,10 +277,9 @@ export default function Products({ page, categories, shops }) {
                   : {}
               }
             ></div>
-            <div>
-              <span className="eyebrow eyebrow--magenta">{detail.cat}</span>
+            <div className="pmodal__panel">
               <h3>{detail.name}</h3>
-              <p>{detail.description}</p>
+              {detail.description && <p>{detail.description}</p>}
               {shops.length > 0 && (
                 <div className="pmodal__shops">
                   <h4>{en ? "Available at" : "Tersedia di"}</h4>

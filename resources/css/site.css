@@ -795,11 +795,12 @@ h3.display,.h3{font-size:clamp(22px,2vw,32px)}
 .modal__box{position:relative;background:#fff;border-radius:var(--radius-card);max-width:840px;width:100%;padding:clamp(26px,4vw,52px);max-height:90vh;overflow:auto;box-shadow:var(--shadow-card-hover)}
 .modal__close{position:absolute;top:18px;right:20px;display:inline-flex;align-items:center;gap:6px;color:var(--purple-700);font-family:var(--font-display);font-weight:600;font-size:14px}
 .modal__close svg{width:20px;height:20px}
-.pmodal__grid{display:grid;grid-template-columns:1fr 1.3fr;gap:32px;align-items:center}
-@media (max-width:640px){.pmodal__grid{grid-template-columns:1fr}}
-.pmodal__img{aspect-ratio:1/1;border-radius:var(--radius-img);background:var(--grad-card-light);background-size:cover;background-position:center}
-.pmodal__grid h3{font-family:var(--font-display);font-weight:700;font-size:clamp(24px,2.4vw,34px);color:var(--purple-900);margin:8px 0 14px}
-.pmodal__grid p{color:var(--text-muted);line-height:1.7}
+.pmodal{display:grid;grid-template-columns:1fr 1fr;min-height:min(72vh,758px);border-radius:30px;overflow:hidden}
+.pmodal__img{background:#F3F2F3;background-size:contain;background-repeat:no-repeat;background-position:center}
+.pmodal__panel{padding:clamp(30px,4vw,60px);display:flex;flex-direction:column;justify-content:center}
+.pmodal__panel h3{font-family:var(--font-display);font-weight:700;font-size:clamp(30px,3.4vw,64px);color:#662B8F;line-height:1.1;margin:0 0 20px}
+.pmodal__panel p{color:#1A1A1A;font-size:16px;line-height:1.75;margin:0}
+@media (max-width:760px){.pmodal{grid-template-columns:1fr;min-height:0}.pmodal__img{aspect-ratio:1/1}.pmodal__panel{padding:28px 22px}}
 /* ==========================================================================
    Product toolbar + board bio modal + available-at
    ========================================================================== */
