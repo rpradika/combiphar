@@ -15,21 +15,27 @@ class ImportCombipharProducts extends Command
 
     protected $description = 'Import Pharma + Consumer Healthcare products from combiphar.com into the CMS (Nutritions & Herbal skipped).';
 
-    /** Remote category id (combiphar.com) => our ProductCategory slug. */
+    /** Remote category id (combiphar.com) => [our slug, display name, parent slug|null]. */
     private const MAP = [
-        2 => 'speciality-care',  // Pharma
-        3 => 'consumer-health',  // Consumer Healthcare
-        // 7 => Herbal / Nutritions & Herbal Care — skipped on purpose
+        2 => ['speciality-care', 'Speciality Care', null],                            // Pharma
+        3 => ['consumer-health', 'Consumer Health', null],                            // Consumer Healthcare
+        5 => ['nutrition-herbal-serealsnack', 'Sereal & Snack', 'nutrition-herbal'],  // Cereal
+        6 => ['nutrition-herbal-honey', 'Honey', 'nutrition-herbal'],                 // Honey
+        7 => ['nutrition-herbal-herbal', 'Herbal', 'nutrition-herbal'],               // Herbal (sub-category, created if missing)
+        // 1 => Wellness — not imported (per request)
     ];
 
     public function handle(): int
     {
-        foreach (self::MAP as $remoteId => $slug) {
-            $category = ProductCategory::where('slug', $slug)->first();
-            if (! $category) {
-                $this->error("Local category '{$slug}' not found — skipped.");
-                continue;
-            }
+        foreach (self::MAP as $remoteId => [$slug, $name, $parentSlug]) {
+            $category = ProductCategory::firstOrCreate(
+                ['slug' => $slug],
+                [
+                    'name_id' => $name,
+                    'name_en' => $name,
+                    'parent_id' => $parentSlug ? ProductCategory::where('slug', $parentSlug)->value('id') : null,
+                ]
+            );
 
             $response = Http::acceptJson()->timeout(30)->get('https://www.combiphar.com/back/api/v1/products', [
                 'locale' => 'id',
