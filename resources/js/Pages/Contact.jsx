@@ -229,12 +229,14 @@ export default function Contact({ page, vacancies, faqs }) {
 
                       <a
                         className="vac-card__btn"
-                        href={v.applyUrl || "#"}
+                        href={
+                          v.applyUrl ||
+                          `mailto:recruitment@combiphar.com?subject=${encodeURIComponent(
+                            (en ? "Application" : "Lamaran") + ": " + v.title,
+                          )}`
+                        }
                         target="_blank"
                         rel="noopener noreferrer"
-                        onClick={(e) => {
-                          if (!v.applyUrl) e.preventDefault()
-                        }}
                       >
                         {en ? "Apply" : "Daftar"}
                       </a>
@@ -555,16 +557,19 @@ export default function Contact({ page, vacancies, faqs }) {
                   </p>
                 )}
               </div>
-              {vac.applyUrl && (
-                <a
-                  className="vac-modal__apply"
-                  href={vac.applyUrl}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                >
-                  {en ? "Apply Now" : "Lamar Sekarang"}
-                </a>
-              )}
+              <a
+                className="vac-modal__apply"
+                href={
+                  vac.applyUrl ||
+                  `mailto:recruitment@combiphar.com?subject=${encodeURIComponent(
+                    (en ? "Application" : "Lamaran") + ": " + vac.title,
+                  )}`
+                }
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                {en ? "Apply Now" : "Lamar Sekarang"}
+              </a>
             </div>
 
             <div className="vac-modal__body">
