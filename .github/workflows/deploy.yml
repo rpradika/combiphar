@@ -1,0 +1,36 @@
+name: Deploy to dev server
+
+# Auto-deploys on every push to main. Also runnable on demand from the
+# Actions tab (workflow_dispatch). The deploy itself runs entirely on the
+# dev server over SSH — this workflow just triggers it.
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+# Never run two deploys at once; let an in-flight deploy finish.
+concurrency:
+  group: deploy-dev
+  cancel-in-progress: false
+
+jobs:
+  deploy:
+    name: Deploy (Docker Compose)
+    runs-on: ubuntu-latest
+    steps:
+      - name: Deploy over SSH
+        # Pin to a commit SHA instead of @v1 for stricter supply-chain safety.
+        uses: appleboy/ssh-action@v1
+        with:
+          host: ${{ secrets.DEV_SSH_HOST }}
+          username: ${{ secrets.DEV_SSH_USER }}
+          key: ${{ secrets.DEV_SSH_KEY }}
+          port: ${{ secrets.DEV_SSH_PORT }}
+          # Abort on the first failing command in the script.
+          script_stop: true
+          # First deploy builds the image from scratch (apt, gd, node) — give it room.
+          command_timeout: 30m
+          script: |
+            cd ${{ secrets.DEV_APP_PATH }}
+            DEPLOY_BRANCH=main bash deploy.sh

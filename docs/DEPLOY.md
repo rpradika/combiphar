@@ -1,0 +1,129 @@
+# Auto-deploy to the dev server
+
+Every push to `main` triggers **`.github/workflows/deploy.yml`**, which SSHes
+into the dev server and runs **`deploy.sh`** there. The deploy runs the app via
+**Docker Compose** (same setup as local) and applies **migrations only** — it
+does not seed (content is CMS/import-driven, and `OfficesSeeder` is intentionally
+local-only).
+
+```
+push to main ──▶ GitHub Actions ──▶ ssh dev server ──▶ bash deploy.sh
+                                                          ├─ git fetch + reset --hard origin/main
+                                                          ├─ docker compose up -d --build
+                                                          ├─ composer install (--no-dev)
+                                                          ├─ npm ci && npm run build
+                                                          ├─ php artisan migrate --force
+                                                          └─ php artisan optimize:clear
+```
+
+You can also trigger it manually: **Actions tab → “Deploy to dev server” → Run workflow.**
+
+---
+
+## 1. Required GitHub secrets
+
+Set these in the repo: **Settings → Secrets and variables → Actions → New repository secret.**
+
+| Secret           | Example                              | Purpose                                            |
+| ---------------- | ------------------------------------ | -------------------------------------------------- |
+| `DEV_SSH_HOST`   | `203.0.113.10` or `dev.example.com`  | Dev server hostname / IP                           |
+| `DEV_SSH_USER`   | `deploy`                             | SSH user that owns the repo checkout               |
+| `DEV_SSH_KEY`    | *(full private key, incl. header)*   | Private key whose public half is in the server's `~/.ssh/authorized_keys` |
+| `DEV_SSH_PORT`   | `22`                                 | SSH port                                           |
+| `DEV_APP_PATH`   | `/var/www/combiphar-web`             | Absolute path to the repo on the server            |
+
+### Generating a deploy key
+
+On any machine:
+
+```bash
+ssh-keygen -t ed25519 -C "github-deploy-combiphar" -f deploy_key
+```
+
+- Append `deploy_key.pub` to the server user's `~/.ssh/authorized_keys`.
+- Paste the **entire** `deploy_key` (private, including the `-----BEGIN/END-----`
+  lines) into the `DEV_SSH_KEY` secret.
+
+---
+
+## 2. One-time server bootstrap
+
+Do this once, as the `DEV_SSH_USER`, so the first auto-deploy has something to
+update. Requires `git`, `docker`, and `docker compose` on the server.
+
+```bash
+cd /var/www
+git clone https://github.com/randopradika/combiphar.git combiphar-web
+cd combiphar-web
+
+cp .env.example .env
+# Edit .env — see the notes below, then:
+
+docker compose up -d --build
+docker compose exec -T app php artisan key:generate
+docker compose exec -T app php artisan migrate --force
+```
+
+### `.env` notes for the dev server (Docker + TLS proxy)
+
+The app talks to MySQL over the compose network, and the dev server (gluvia)
+terminates TLS in front of the app, so:
+
+```dotenv
+APP_ENV=production          # or 'staging'
+APP_DEBUG=false             # true only while actively debugging
+APP_URL=https://<your-dev-host>
+APP_FORCE_HTTPS=true        # gluvia terminates TLS; forces https:// links (avoids mixed-content)
+
+DB_CONNECTION=mysql
+DB_HOST=mysql               # the docker-compose service name, NOT 127.0.0.1
+DB_PORT=3306
+DB_DATABASE=combiphar
+DB_USERNAME=combiphar       # or root
+DB_PASSWORD=secret          # match docker-compose.yml (root password is 'root')
+```
+
+> `.env` is gitignored, so it is **never** overwritten by a deploy — configure
+> it once. `git reset --hard` in the deploy only touches tracked files.
+
+---
+
+## 3. What a deploy does / does not touch
+
+**Does:** pull `origin/main`, rebuild the image if the Dockerfile changed, install
+PHP + JS deps, build front-end assets (`public/build` is gitignored, so it must be
+built on the server), run migrations, clear caches, and re-link storage.
+
+**Does not:** overwrite `.env`, delete uploaded images in `storage/app/public/`
+(gitignored, transferred separately), or seed the database. The local-only
+`OfficesSeeder`/`DatabaseSeeder` are untracked, so they are preserved but not run.
+
+`git reset --hard origin/main` discards any **tracked** local edits on the server
+— treat the dev checkout as a mirror of `main`, not a place to hand-edit code.
+
+---
+
+## 4. Manual deploy (no GitHub Actions)
+
+SSH into the server and run the script directly:
+
+```bash
+cd /var/www/combiphar-web
+bash deploy.sh                       # deploy main
+DEPLOY_BRANCH=my-branch bash deploy.sh   # deploy a different branch
+```
+
+---
+
+## 5. Troubleshooting
+
+- **Workflow can't connect / “handshake failed”** — check `DEV_SSH_HOST`,
+  `DEV_SSH_PORT`, and that `deploy_key.pub` is in the server's `authorized_keys`
+  for `DEV_SSH_USER`.
+- **`.env is missing`** — run the bootstrap in §2 first.
+- **Job times out** — the first build compiles PHP extensions + installs Node; the
+  workflow allows 30m. Subsequent deploys reuse cached image layers and are fast.
+- **DB connection refused** — confirm `DB_HOST=mysql` (not `127.0.0.1`) in the
+  server `.env`, and that the `mysql` container is healthy (`docker compose ps`).
+- **Watch the run** — Actions tab → the run → the “Deploy over SSH” step streams
+  the full `deploy.sh` output.
