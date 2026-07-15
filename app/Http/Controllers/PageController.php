@@ -15,7 +15,9 @@ use App\Models\Office;
 use App\Models\OnlineShop;
 use App\Models\Page;
 use App\Models\Person;
+use App\Models\Product;
 use App\Models\ProductCategory;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
 use Inertia\Inertia;
 
@@ -172,6 +174,7 @@ class PageController extends Controller
             $list = is_array($selected) ? $shops->whereIn('id', $selected) : $shops;
 
             return [
+                'slug' => $p->slug,
                 'name' => $p->tr('name'),
                 'summary' => $p->tr('summary') ?: $p->tr('description'),
                 'description' => $p->tr('description'), 'image' => $this->img($p->image),
@@ -199,6 +202,46 @@ class PageController extends Controller
                     ]),
                 ]),
         ]);
+    }
+
+    /** Live site search across products + articles (JSON). */
+    public function search(Request $request)
+    {
+        $q = trim((string) $request->query('q', ''));
+        if (mb_strlen($q) < 2) {
+            return response()->json(['products' => [], 'articles' => []]);
+        }
+        $like = '%'.$q.'%';
+        $locale = app()->getLocale();
+
+        $products = Product::where(fn ($w) => $w
+            ->where('name_id', 'like', $like)
+            ->orWhere('name_en', 'like', $like))
+            ->orderBy('name_id')
+            ->limit(8)
+            ->get()
+            ->map(fn ($p) => [
+                'type' => 'product',
+                'title' => $p->tr('name'),
+                'image' => $this->img($p->image),
+                'url' => route('products', ['locale' => $locale]).'?product='.$p->slug,
+            ]);
+
+        $articles = Article::published()
+            ->where(fn ($w) => $w
+                ->where('title_id', 'like', $like)
+                ->orWhere('title_en', 'like', $like))
+            ->latest('published_at')
+            ->limit(8)
+            ->get()
+            ->map(fn ($a) => [
+                'type' => 'article',
+                'title' => $a->tr('title'),
+                'image' => $this->img($a->cover_image),
+                'url' => route('news.show', ['locale' => $locale, 'slug' => $a->slug]),
+            ]);
+
+        return response()->json(['products' => $products, 'articles' => $articles]);
     }
 
     public function csr()

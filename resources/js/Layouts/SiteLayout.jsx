@@ -1,5 +1,5 @@
 import { Link, usePage } from "@inertiajs/react"
-import { useEffect, useState } from "react"
+import { useEffect, useRef, useState } from "react"
 
 function useReveal(url) {
   useEffect(() => {
@@ -42,11 +42,147 @@ function useReveal(url) {
   }, [url])
 }
 
+function SearchOverlay({ locale, en, onClose }) {
+  const [query, setQuery] = useState("")
+  const [results, setResults] = useState({ products: [], articles: [] })
+  const [loading, setLoading] = useState(false)
+  const inputRef = useRef(null)
+
+  useEffect(() => {
+    inputRef.current?.focus()
+    const onKey = (e) => e.key === "Escape" && onClose()
+    window.addEventListener("keydown", onKey)
+    return () => window.removeEventListener("keydown", onKey)
+  }, [onClose])
+
+  useEffect(() => {
+    const q = query.trim()
+    if (q.length < 2) {
+      setResults({ products: [], articles: [] })
+      setLoading(false)
+      return
+    }
+    setLoading(true)
+    const ctrl = new AbortController()
+    const timer = setTimeout(() => {
+      fetch(`/${locale}/search?q=${encodeURIComponent(q)}`, {
+        headers: { Accept: "application/json" },
+        signal: ctrl.signal,
+      })
+        .then((r) => r.json())
+        .then((d) =>
+          setResults({
+            products: d.products ?? [],
+            articles: d.articles ?? [],
+          }),
+        )
+        .catch((e) => {
+          if (e.name !== "AbortError")
+            setResults({ products: [], articles: [] })
+        })
+        .finally(() => setLoading(false))
+    }, 250)
+    return () => {
+      clearTimeout(timer)
+      ctrl.abort()
+    }
+  }, [query, locale])
+
+  const items = [...results.products, ...results.articles]
+  const typed = query.trim().length >= 2
+
+  return (
+    <div
+      className="search-overlay"
+      role="dialog"
+      aria-modal="true"
+      aria-label={en ? "Search" : "Pencarian"}
+    >
+      <div className="search-overlay__backdrop" onClick={onClose} />
+      <div className="search-overlay__panel">
+        <div className="search-bar">
+          <input
+            ref={inputRef}
+            className="search-bar__input"
+            type="search"
+            value={query}
+            onChange={(e) => setQuery(e.target.value)}
+            placeholder={en ? "Type your search ..." : "Ketik pencarian ..."}
+          />
+          <button
+            type="button"
+            className="search-bar__close"
+            onClick={onClose}
+            aria-label={en ? "Close search" : "Tutup pencarian"}
+          >
+            <svg
+              width="18"
+              height="18"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              strokeWidth="2.4"
+              strokeLinecap="round"
+            >
+              <path d="M6 6l12 12M18 6L6 18" />
+            </svg>
+          </button>
+        </div>
+
+        {typed && (
+          <div className="search-results">
+            {loading && (
+              <p className="search-results__status">
+                {en ? "Searching ..." : "Mencari ..."}
+              </p>
+            )}
+            {!loading && items.length === 0 && (
+              <p className="search-results__empty">
+                {en ? "NO DATA FOUND" : "DATA TIDAK DITEMUKAN"}
+              </p>
+            )}
+            {!loading && items.length > 0 && (
+              <ul className="search-results__list">
+                {items.map((it, i) => (
+                  <li key={i}>
+                    <Link
+                      href={it.url}
+                      className="search-result"
+                      onClick={onClose}
+                    >
+                      <span className="search-result__thumb">
+                        {it.image && <img src={it.image} alt="" />}
+                      </span>
+                      <span className="search-result__meta">
+                        <span className="search-result__title">{it.title}</span>
+                        <span className="search-result__type">
+                          {it.type === "product"
+                            ? en
+                              ? "Product"
+                              : "Produk"
+                            : en
+                              ? "Article"
+                              : "Artikel"}
+                        </span>
+                      </span>
+                    </Link>
+                  </li>
+                ))}
+              </ul>
+            )}
+          </div>
+        )}
+      </div>
+    </div>
+  )
+}
+
 export default function SiteLayout({ children, navMode = "solid" }) {
   const { props, url } = usePage()
   const { t, nav, homeUrl, altUrls, locale, routeName, footer } = props
   const [scrolled, setScrolled] = useState(false)
   const [menuOpen, setMenuOpen] = useState(false)
+  const [searchOpen, setSearchOpen] = useState(false)
   const isHome = url === "/" + locale
 
   useReveal(url)
@@ -59,8 +195,13 @@ export default function SiteLayout({ children, navMode = "solid" }) {
   }, [])
 
   useEffect(() => {
-    document.body.style.overflow = menuOpen ? "hidden" : ""
-  }, [menuOpen])
+    document.body.style.overflow = menuOpen || searchOpen ? "hidden" : ""
+  }, [menuOpen, searchOpen])
+
+  // Close search on route change (Inertia navigation).
+  useEffect(() => {
+    setSearchOpen(false)
+  }, [url])
 
   const menu = ["about", "products", "csr", "investor", "news", "contact"]
   const navClass =
@@ -116,7 +257,11 @@ export default function SiteLayout({ children, navMode = "solid" }) {
                 EN
               </a>
             </span>
-            <button className="nav__search" aria-label={t.search}>
+            <button
+              className="nav__search"
+              aria-label={t.search}
+              onClick={() => setSearchOpen(true)}
+            >
               <svg
                 width="19"
                 height="19"
@@ -165,6 +310,14 @@ export default function SiteLayout({ children, navMode = "solid" }) {
           </div>
         </div>
       </header>
+
+      {searchOpen && (
+        <SearchOverlay
+          locale={locale}
+          en={locale === "en"}
+          onClose={() => setSearchOpen(false)}
+        />
+      )}
 
       <div className={"mobilemenu" + (menuOpen ? " open" : "")}>
         <div className="mobilemenu__panel">

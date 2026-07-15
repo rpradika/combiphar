@@ -6,6 +6,7 @@ import Modal from "../components/Modal"
 export default function Products({ page, categories }) {
   const {
     props: { t, locale, homeUrl },
+    url,
   } = usePage()
 
   const en = locale === "en"
@@ -23,6 +24,25 @@ export default function Products({ page, categories }) {
     const els = document.querySelectorAll(".rv")
     els.forEach((el) => el.classList.add("is-in"))
   }, [active, subFilter, query, sort, pageNo])
+
+  // Deep-link: /products?product={slug} (e.g. from global search) opens that product's modal.
+  const allProducts = useMemo(
+    () =>
+      categories.flatMap((c) => [
+        ...(c.products ?? []).map((p) => ({ ...p, cat: c.name })),
+        ...(c.children ?? []).flatMap((s) =>
+          (s.products ?? []).map((p) => ({ ...p, cat: c.name })),
+        ),
+      ]),
+    [categories],
+  )
+
+  useEffect(() => {
+    const slug = new URLSearchParams(url.split("?")[1] || "").get("product")
+    if (!slug) return
+    const found = allProducts.find((p) => p.slug === slug)
+    if (found) setDetail(found)
+  }, [url, allProducts])
 
   const cat = categories[active]
   const subs = cat?.children ?? []
