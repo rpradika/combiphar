@@ -466,7 +466,10 @@ export default function Contact({ page, vacancies, faqs }) {
                         href={
                           v.applyUrl ||
                           `mailto:recruitment@combiphar.com?subject=${encodeURIComponent(
-                            (en ? "Application" : "Lamaran") + ": " + v.title,
+                            (en ? "Application" : "Lamaran") +
+                              ": " +
+                              v.title +
+                              (v.location ? " - " + v.location : ""),
                           )}`
                         }
                         target="_blank"
@@ -809,7 +812,10 @@ export default function Contact({ page, vacancies, faqs }) {
                 href={
                   vac.applyUrl ||
                   `mailto:recruitment@combiphar.com?subject=${encodeURIComponent(
-                    (en ? "Application" : "Lamaran") + ": " + vac.title,
+                    (en ? "Application" : "Lamaran") +
+                      ": " +
+                      vac.title +
+                      (vac.location ? " - " + vac.location : ""),
                   )}`
                 }
                 target="_blank"
