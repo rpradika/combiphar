@@ -12,7 +12,10 @@ class ImportCombipharOffices extends Command
 
     protected $description = 'Import branch offices (Lokasi Kami) from combiphar.com into the CMS.';
 
-    /** Region slugs used by the combiphar distributions API (category=branch). */
+    /** Distribution categories on the combiphar distributions API. */
+    private const CATEGORIES = ['branch', 'distributor', 'factory'];
+
+    /** Region slugs used by the combiphar distributions API. */
     private const LOCATIONS = ['jabodetabek', 'jawa', 'sumatra', 'kalimantan', 'sulawesi', 'bali', 'papua'];
 
     public function handle(): int
@@ -20,33 +23,37 @@ class ImportCombipharOffices extends Command
         $sort = 0;
         $count = 0;
 
-        foreach (self::LOCATIONS as $loc) {
-            $response = Http::acceptJson()->timeout(30)->get('https://www.combiphar.com/back/api/v1/distributions', [
-                'locale' => 'id',
-                'category' => 'branch',
-                'location' => $loc,
-            ]);
+        foreach (self::CATEGORIES as $cat) {
+            foreach (self::LOCATIONS as $loc) {
+                $response = Http::acceptJson()->timeout(30)->get('https://www.combiphar.com/back/api/v1/distributions', [
+                    'locale' => 'id',
+                    'category' => $cat,
+                    'location' => $loc,
+                ]);
 
-            $items = data_get($response->json(), 'data.distributions', []);
+                $items = data_get($response->json(), 'data.distributions', []);
 
-            foreach ($items as $d) {
-                $name = trim($d['title'] ?? '');
-                if ($name === '') {
-                    continue;
+                foreach ($items as $d) {
+                    $name = trim($d['title'] ?? '');
+                    if ($name === '') {
+                        continue;
+                    }
+                    $address = preg_replace('/\s+/', ' ', trim(strip_tags(str_replace('&nbsp;', ' ', $d['address'] ?? ''))));
+
+                    Office::updateOrCreate(
+                        [
+                            'name' => $name,
+                            'category' => $d['category'] ?? ucfirst($cat),
+                            'city' => $d['location'] ?? ucfirst($loc),
+                        ],
+                        [
+                            'description_id' => $address,
+                            'description_en' => $address,
+                            'sort' => $sort++,
+                        ]
+                    );
+                    $count++;
                 }
-                $address = preg_replace('/\s+/', ' ', trim(strip_tags(str_replace('&nbsp;', ' ', $d['address'] ?? ''))));
-
-                Office::updateOrCreate(
-                    ['name' => $name],
-                    [
-                        'city' => $d['location'] ?? ucfirst($loc),
-                        'category' => $d['category'] ?? 'Branch',
-                        'description_id' => $address,
-                        'description_en' => $address,
-                        'sort' => $sort++,
-                    ]
-                );
-                $count++;
             }
         }
 
