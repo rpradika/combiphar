@@ -418,14 +418,18 @@ h3.display,.h3{font-size:clamp(22px,2vw,32px)}
 .manifesto{
   position: relative;
   overflow: hidden;
+  height: 750px;
+  width:100%
 }
 
 .manifesto__img,
 .manifesto__video,
-.manifesto__iframe{
-  display: block;
+.manifesto__iframe {
+  position: absolute;
+  inset: 0;
   width: 100%;
   height: 100%;
+  display: block;
 }
 
 .manifesto__video,
@@ -435,6 +439,16 @@ h3.display,.h3{font-size:clamp(22px,2vw,32px)}
   z-index: 1;
   background: #000;
   border: 0;
+}
+
+.manifesto__iframe {
+  border: 0;
+}
+
+.manifesto__img,
+.manifesto__video {
+  object-fit: cover;
+  object-position: center;
 }
 
 .manifesto__content{
@@ -466,6 +480,15 @@ h3.display,.h3{font-size:clamp(22px,2vw,32px)}
   height: 65px;
 }
 
+.manifesto__play svg path {
+  fill: white;
+  transition: fill 0.2s ease;
+}
+
+.manifesto__play:hover svg path {
+  fill: var(--magenta);
+}
+
 .manifesto.is-playing .manifesto__content{
   display: none;
 }
@@ -493,19 +516,19 @@ h3.display,.h3{font-size:clamp(22px,2vw,32px)}
   color: #fff;
 }
 /* Manifesto full-image (uncropped, height follows the image) */
-.manifesto--photo{
+.manifesto--photo {
   position: relative;
   overflow: hidden;
   padding: 0;
-  min-height: 0;
-  height: auto;
-  display: block;
+  aspect-ratio: 16 / 9; /* adjust to your design */
+  min-height: 420px;    /* optional */
   background: var(--grad-section-dark);
 }
 /* .manifesto__img{display:block;width:100%;height:100%;object-fit:cover;object-position:bottom} */
 
-.manifesto--photo .manifesto__img{
-  display: block;
+.manifesto--photo .manifesto__img {
+  position: absolute;
+  inset: 0;
   width: 100%;
   height: 100%;
   object-fit: cover;
@@ -524,18 +547,27 @@ h3.display,.h3{font-size:clamp(22px,2vw,32px)}
   gap: 18px;
 }
 
-@media (max-width: 760px){
+@media (max-width: 760px) {
   .manifesto,
-  .manifesto--photo{
+  .manifesto--photo {
     height: auto !important;
+    aspect-ratio: 16 / 9 !important;
     min-height: 0 !important;
-    aspect-ratio: auto !important;
   }
 
-  .manifesto--photo .manifesto__img{
+  .manifesto__img,
+  .manifesto__video,
+  .manifesto__iframe {
+    position: absolute;
+    inset: 0;
     width: 100%;
-    height: auto !important;
-    max-width: 100%;
+    height: 100%;
+  }
+
+  .manifesto__img,
+  .manifesto__video {
+    object-fit: cover;
+    object-position: center;
   }
 }
 
