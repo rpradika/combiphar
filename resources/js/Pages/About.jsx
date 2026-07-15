@@ -73,8 +73,8 @@ export default function About({
   const en = locale === "en"
   const [board, setBoard] = useState(null)
   const [facOpen, setFacOpen] = useState(false)
-  const [city, setCity] = useState("Jabodetabek")
-  const [cat, setCat] = useState("")
+  const [city, setCity] = useState("Jabodetabek");
+  const [cat, setCat] = useState("Branch");
 
   const cities = useMemo(
     () => [...new Set(offices.map((o) => o.city).filter(Boolean))],
