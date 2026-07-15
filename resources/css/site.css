@@ -893,8 +893,8 @@ h3.display,.h3{font-size:clamp(22px,2vw,32px)}
   color: #fff;
   display: flex;
   align-items: center;
-  justify-content: space-between;
-  text-align: left;
+  justify-content: center;
+  text-align: center;
 }
 
 .subnav__caret{
@@ -986,7 +986,7 @@ h3.display,.h3{font-size:clamp(22px,2vw,32px)}
     display: inline-block;
     position: relative;
     min-width: 160px;
-    max-width: 250px;
+    max-width: 220px;
     flex: 0 0 auto;
   }
 }
