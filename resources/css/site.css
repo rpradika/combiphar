@@ -2627,7 +2627,7 @@ html,body{overflow-x:hidden}
     .nav__logo{position:absolute;left:50%;top:50%;transform:translate(-50%,-50%)}
     .nav__logo img,.nav--overlay:not(.nav--scrolled) .nav__logo .logo-color{height:43px;display:inline-block}
     .nav__menu,.nav__lang,.nav__search{display:none}
-    .nav__tools{margin-left:auto}
+    .nav__tools{margin-left:auto;gap:4px}
     .nav__burger,.nav--overlay:not(.nav--scrolled) .nav__burger{display:block;color:#3E1D81}
 }
 /* Slide-in menu: white top bar + purple rounded panel */
