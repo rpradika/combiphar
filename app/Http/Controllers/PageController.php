@@ -288,6 +288,7 @@ class PageController extends Controller
                 'body' => $program->tr('content') ?: $program->tr('body'),
                 'image' => $this->img($program->image),
                 'category' => $program->category,
+                'layout' => $program->layout,
                 'gallery' => collect($program->gallery ?? [])->map(fn ($g) => $this->img($g))->values(),
                 'seeAll' => $program->link,
             ],
@@ -296,6 +297,12 @@ class PageController extends Controller
                 'body' => $c->tr('content') ?: $c->tr('body'),
                 'slug' => $c->slug,
             ]),
+            // Slider layout (mis. Social Care): each sub-program becomes a slide.
+            'slides' => $program->children->map(fn ($c) => [
+                'image' => $this->img($c->image),
+                'title' => $c->tr('title'),
+                'body' => $c->tr('body') ?: trim(strip_tags((string) $c->tr('content'))),
+            ])->values(),
         ]);
     }
 

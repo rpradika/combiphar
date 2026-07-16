@@ -42,6 +42,16 @@ class CsrProgramResource extends Resource
                     ])
                     ->required()
                     ->default('esg'),
+                Forms\Components\Select::make('layout')
+                    ->label('Tata Letak Halaman Detail')
+                    ->helperText('Pilih tampilan halaman detail /csr/{slug}. "Slider Program" memakai banner + intro + slider sub-program (mis. Social Care); "Galeri Foto" memakai grid foto (mis. Environmental); "Artikel" memakai konten + formulir kontak.')
+                    ->options([
+                        'default' => 'Artikel + Formulir Kontak (default)',
+                        'gallery' => 'Galeri Foto (mis. Environmental)',
+                        'slider' => 'Slider Program (mis. Social Care)',
+                    ])
+                    ->default('default')
+                    ->native(false),
                 Forms\Components\TextInput::make('title_id')
                     ->required()
                     ->maxLength(255),

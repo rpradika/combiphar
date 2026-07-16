@@ -1,8 +1,9 @@
 import { Head, Link, useForm, usePage } from "@inertiajs/react"
 import { useState } from "react"
 import SiteLayout from "../Layouts/SiteLayout"
+import { ImpactSlider } from "../components/Sliders"
 
-export default function CsrDetail({ program, topics = [] }) {
+export default function CsrDetail({ program, topics = [], slides = [] }) {
   const {
     props: { t, locale, nav, flash },
   } = usePage()
@@ -33,6 +34,44 @@ export default function CsrDetail({ program, topics = [] }) {
         backgroundPosition: "center",
       }
     : {}
+
+  // Slider layout (Figma 646:1929 — "ESG - Social"): banner title + centered
+  // intro + a slider of sub-programs (image + gradient panel). CMS: set the
+  // program's layout to "Slider Program", write the intro in "Isi Halaman
+  // Detail", and add sub-programs (Induk = this program) with image + title + body.
+  if (program.layout === "slider") {
+    return (
+      <>
+        <Head title={`${program.title} — Combiphar`} />
+
+        <section className="banner banner--about" style={bannerStyle}>
+          <div className="container">
+            <div className="banner__row">
+              <h1 className="display">{program.title}</h1>
+            </div>
+          </div>
+        </section>
+
+        {program.body && (
+          <section className="section">
+            <div className="container">
+              <div
+                className="csr-social-intro rv"
+                dangerouslySetInnerHTML={{ __html: program.body }}
+              />
+            </div>
+          </section>
+        )}
+
+        {slides.length > 0 && (
+          <section className="section csr-social-slider">
+            {/* Full-bleed carousel (Figma 646:1929 — slide spans left-0 w-1920). */}
+            <ImpactSlider items={slides} />
+          </section>
+        )}
+      </>
+    )
+  }
 
   return (
     <>

@@ -1478,6 +1478,15 @@ h3.display,.h3{font-size:clamp(22px,2vw,32px)}
 .csr-seeall{display:flex;justify-content:flex-end;margin-top:clamp(18px,2vw,28px)}
 .csr-seeall a{color:var(--magenta);font-family:var(--font-body);font-size:16px;text-decoration:underline;text-underline-offset:3px}
 .csr-seeall a:hover{color:var(--purple-600)}
+/* CSR Social Care detail (Figma 646:1929) — banner title + centered intro + program slider (reuses the Impact slider) */
+.csr-social-intro{max-width:1273px;margin:0 auto;text-align:center;color:#1e1e1e;font-family:var(--font-body);font-weight:400;font-size:clamp(20px,2.4vw,32px);line-height:1.4}
+.csr-social-intro :is(p,ul,ol){margin:0}
+.csr-social-intro p + p{margin-top:1em}
+.csr-social-slider{padding-top:0}
+.csr-social-slider .impact.slider{margin-top:0}
+/* Full-bleed carousel (Figma 646:1929 — slide spans the full viewport, square corners) */
+.csr-social-slider .impact-card{border-radius:0;aspect-ratio:1920/640}
+@media(max-width:820px){.csr-social-slider .impact-card{aspect-ratio:auto}}
 @media (max-width: 680px){
   .sport-grid{
     grid-template-columns:1fr;
