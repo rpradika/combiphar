@@ -21,4 +21,6 @@ Route::prefix('{locale}')
         Route::get('investor', [PageController::class, 'investor'])->name('investor');
         Route::get('contact', [PageController::class, 'contact'])->name('contact');
         Route::post('contact', [PageController::class, 'contactSubmit'])->name('contact.submit');
+        Route::get('terms-of-use', [PageController::class, 'terms'])->name('terms');
+        Route::get('privacy-notice', [PageController::class, 'privacy'])->name('privacy');
     });

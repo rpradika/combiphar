@@ -10,6 +10,7 @@ use App\Models\Facility;
 use App\Models\GlobalSite;
 use App\Models\ImpactProgram;
 use App\Models\JobVacancy;
+use App\Models\LegalPage;
 use App\Models\Milestone;
 use App\Models\Office;
 use App\Models\OnlineShop;
@@ -316,6 +317,26 @@ class PageController extends Controller
                 'title' => $c->tr('title'),
                 'body' => $c->tr('body') ?: trim(strip_tags((string) $c->tr('content'))),
             ])->values(),
+        ]);
+    }
+
+    public function terms()
+    {
+        return $this->legal('terms');
+    }
+
+    public function privacy()
+    {
+        return $this->legal('privacy');
+    }
+
+    private function legal(string $key)
+    {
+        $lp = LegalPage::where('key', $key)->first();
+
+        return Inertia::render('Legal', [
+            'title' => $lp?->tr('title'),
+            'body' => $lp?->tr('body'),
         ]);
     }
 
