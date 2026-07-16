@@ -341,6 +341,27 @@ class PageController extends Controller
         ]);
     }
 
+    public function sitemap()
+    {
+        $articles = Article::published()->get(['slug']);
+        $programs = CsrProgram::whereNotNull('slug')->get(['slug']);
+        $urls = [];
+
+        foreach (['id', 'en'] as $loc) {
+            foreach (['home', 'about', 'products', 'csr', 'news', 'investor', 'contact', 'terms', 'privacy'] as $name) {
+                $urls[] = ['loc' => Localize::url($name, $loc), 'priority' => $name === 'home' ? '1.0' : '0.8'];
+            }
+            foreach ($articles as $a) {
+                $urls[] = ['loc' => Localize::url('news.show', $loc, ['slug' => $a->slug]), 'priority' => '0.6'];
+            }
+            foreach ($programs as $p) {
+                $urls[] = ['loc' => Localize::url('csr.show', $loc, ['slug' => $p->slug]), 'priority' => '0.6'];
+            }
+        }
+
+        return response()->view('sitemap', ['urls' => $urls])->header('Content-Type', 'application/xml');
+    }
+
     public function news()
     {
         $articles = Article::published()->latest('published_at')->get();

@@ -9,6 +9,20 @@
     @viteReactRefresh
     @vite(['resources/css/site.css', 'resources/js/app.jsx'])
     @inertiaHead
+    @php
+        $__socials = \App\Models\SocialLink::orderBy('sort')->pluck('url')->filter()->values();
+        $__ld = json_encode([
+            '@context' => 'https://schema.org',
+            '@type' => 'Organization',
+            'name' => 'Combiphar',
+            'url' => url('/'),
+            'logo' => url('/img/logo-header.svg'),
+            'sameAs' => $__socials,
+        ], JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE);
+    @endphp
+    <script type="application/ld+json">
+    {!! $__ld !!}
+    </script>
 </head>
 <body>
     @inertia

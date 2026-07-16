@@ -6,6 +6,13 @@ use Illuminate\Support\Facades\Route;
 
 Route::get('/', fn () => redirect('/'.config('app.locale')));
 
+Route::get('sitemap.xml', [PageController::class, 'sitemap']);
+Route::get('robots.txt', fn () => response(
+    "User-agent: *\nDisallow:\n\nSitemap: ".url('/sitemap.xml')."\n",
+    200,
+    ['Content-Type' => 'text/plain'],
+));
+
 /*
  * Localized path per page: [id, en]. English URLs are unchanged; Indonesian URLs
  * use the slugs from combiphar.com. Route names are suffixed with the locale

@@ -1,4 +1,4 @@
-import { Link, usePage } from "@inertiajs/react"
+import { Head, Link, usePage } from "@inertiajs/react"
 import { useEffect, useRef, useState } from "react"
 
 function useReveal(url) {
@@ -210,8 +210,64 @@ export default function SiteLayout({ children, navMode = "solid" }) {
     (scrolled ? " nav--scrolled" : "") +
     (isHome ? " nav--home" : "")
 
+  const seoDescription =
+    props.page?.metaDescription ||
+    "Combiphar — Championing a Healthy Tomorrow. Perusahaan farmasi dan kesehatan konsumen terkemuka di Indonesia."
+  const seoTitle =
+    props.page?.metaTitle || "Combiphar — Championing a Healthy Tomorrow"
+  const seoOrigin = altUrls?.en ? new URL(altUrls.en).origin : ""
+  const seoPageImg = props.page?.bannerImage || props.page?.heroImage || null
+  const seoImage = seoPageImg
+    ? seoPageImg.startsWith("http")
+      ? seoPageImg
+      : seoOrigin + seoPageImg
+    : null
+
   return (
     <>
+      <Head>
+        <meta head-key="description" name="description" content={seoDescription} />
+        <link head-key="canonical" rel="canonical" href={altUrls[locale]} />
+        <link head-key="alt-id" rel="alternate" hrefLang="id" href={altUrls.id} />
+        <link head-key="alt-en" rel="alternate" hrefLang="en" href={altUrls.en} />
+        <link
+          head-key="alt-default"
+          rel="alternate"
+          hrefLang="x-default"
+          href={altUrls.en}
+        />
+        <meta head-key="og:type" property="og:type" content="website" />
+        <meta head-key="og:site_name" property="og:site_name" content="Combiphar" />
+        <meta
+          head-key="og:locale"
+          property="og:locale"
+          content={locale === "en" ? "en_US" : "id_ID"}
+        />
+        <meta head-key="og:url" property="og:url" content={altUrls[locale]} />
+        <meta head-key="og:title" property="og:title" content={seoTitle} />
+        <meta
+          head-key="og:description"
+          property="og:description"
+          content={seoDescription}
+        />
+        {seoImage && (
+          <meta head-key="og:image" property="og:image" content={seoImage} />
+        )}
+        <meta
+          head-key="tw:card"
+          name="twitter:card"
+          content={seoImage ? "summary_large_image" : "summary"}
+        />
+        <meta head-key="tw:title" name="twitter:title" content={seoTitle} />
+        <meta
+          head-key="tw:description"
+          name="twitter:description"
+          content={seoDescription}
+        />
+        {seoImage && (
+          <meta head-key="tw:image" name="twitter:image" content={seoImage} />
+        )}
+      </Head>
       <a className="skip-link" href="#main">
         Skip to content
       </a>
