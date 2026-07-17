@@ -213,7 +213,8 @@ class PageController extends Controller
         if (mb_strlen($q) < 2) {
             return response()->json(['products' => [], 'articles' => []]);
         }
-        $like = '%'.$q.'%';
+        // Escape LIKE wildcards so a literal % or _ in the query doesn't scan everything.
+        $like = '%'.addcslashes($q, '%_\\').'%';
         $locale = app()->getLocale();
 
         $products = Product::where(fn ($w) => $w

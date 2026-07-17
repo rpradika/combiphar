@@ -46,10 +46,12 @@ foreach (SetLocale::SUPPORTED as $loc) {
             Route::get($slugs['csr'][$loc].'/{slug}', [PageController::class, 'csrShow'])->name("csr.show.$loc");
             Route::get($slugs['news'][$loc], [PageController::class, 'news'])->name("news.$loc");
             Route::get($slugs['news'][$loc].'/{slug}', [PageController::class, 'newsShow'])->name("news.show.$loc");
-            Route::get('search', [PageController::class, 'search'])->name("search.$loc");
+            Route::get('search', [PageController::class, 'search'])->name("search.$loc")
+                ->middleware('throttle:60,1');
             Route::get($slugs['investor'][$loc], [PageController::class, 'investor'])->name("investor.$loc");
             Route::get($slugs['contact'][$loc], [PageController::class, 'contact'])->name("contact.$loc");
-            Route::post($slugs['contact'][$loc], [PageController::class, 'contactSubmit'])->name("contact.submit.$loc");
+            Route::post($slugs['contact'][$loc], [PageController::class, 'contactSubmit'])->name("contact.submit.$loc")
+                ->middleware('throttle:5,1');
             Route::get($slugs['terms'][$loc], [PageController::class, 'terms'])->name("terms.$loc");
             Route::get($slugs['privacy'][$loc], [PageController::class, 'privacy'])->name("privacy.$loc");
 
