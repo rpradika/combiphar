@@ -7,11 +7,17 @@ use Illuminate\Support\Facades\Route;
 Route::get('/', fn () => redirect('/'.config('app.locale')));
 
 Route::get('sitemap.xml', [PageController::class, 'sitemap']);
-Route::get('robots.txt', fn () => response(
-    "User-agent: *\nDisallow:\n\nSitemap: ".url('/sitemap.xml')."\n",
-    200,
-    ['Content-Type' => 'text/plain'],
-));
+Route::get('robots.txt', function () {
+    // Non-production hosts must not advertise the sitemap. Crawling stays
+    // allowed (no Disallow) so the NoIndexNonProduction X-Robots-Tag header
+    // is actually fetched and honoured — a robots-blocked page can still be
+    // indexed URL-only, which is how webdev.combiphar.com ended up in Google.
+    $lines = app()->environment('production')
+        ? "User-agent: *\nDisallow:\n\nSitemap: ".url('/sitemap.xml')."\n"
+        : "User-agent: *\nDisallow:\n";
+
+    return response($lines, 200, ['Content-Type' => 'text/plain']);
+});
 
 /*
  * Localized path per page: [id, en]. English URLs are unchanged; Indonesian URLs
@@ -74,6 +80,20 @@ Route::get('id/news/{slug}', fn ($slug) => redirect('/id/berita/'.$slug, 301));
 Route::redirect('en/csr', '/en/csr-community', 301);
 Route::redirect('en/privacy-notice', '/en/privacy-policy', 301);
 Route::get('en/csr/{slug}', fn ($slug) => redirect('/en/csr-community/'.$slug, 301));
+
+/*
+ * 301s for URLs Google has indexed from the old combiphar.com build that have
+ * no equivalent path here (verified via site:combiphar.com). Product detail
+ * pages don't exist on this site — products open as a modal on the listing
+ * page via ?product={slug}; the slugs match because both sites share the
+ * combiphar API as the source.
+ */
+Route::redirect('en/about-us', '/en/about', 301);
+Route::redirect('id/karir', '/id/kontak-kami', 301);
+Route::redirect('en/career', '/en/contact', 301);
+Route::get('id/product/{slug}', fn ($slug) => redirect('/id/produk?product='.$slug, 301));
+Route::get('id/produk/{slug}', fn ($slug) => redirect('/id/produk?product='.$slug, 301));
+Route::get('en/product/{slug}', fn ($slug) => redirect('/en/products?product='.$slug, 301));
 
 /*
  * Unknown path with no locale prefix (e.g. /nope). Renders in the default locale;

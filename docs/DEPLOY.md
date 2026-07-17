@@ -70,7 +70,7 @@ The app talks to MySQL over the compose network, and the dev server (gluvia)
 terminates TLS in front of the app, so:
 
 ```dotenv
-APP_ENV=production          # or 'staging'
+APP_ENV=staging             # NOT 'production' on dev: robots sitemap, X-Robots-Tag noindex and GA are gated on it
 APP_DEBUG=false             # true only while actively debugging
 APP_URL=https://<your-dev-host>
 APP_FORCE_HTTPS=true        # gluvia terminates TLS; forces https:// links (avoids mixed-content)
