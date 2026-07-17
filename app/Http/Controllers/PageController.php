@@ -263,7 +263,7 @@ class PageController extends Controller
         ]);
     }
 
-    public function csrShow(string $locale, string $slug)
+    public function csrShow(string $slug)
     {
         $program = CsrProgram::where('slug', $slug)->firstOrFail();
 
@@ -376,7 +376,7 @@ class PageController extends Controller
         ]);
     }
 
-    public function newsShow(string $locale, string $slug)
+    public function newsShow(string $slug)
     {
         $article = Article::where('slug', $slug)->firstOrFail();
 
