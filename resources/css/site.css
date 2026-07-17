@@ -607,7 +607,7 @@ h3.display,.h3{font-size:clamp(22px,2vw,32px)}
 .ncard__img{aspect-ratio:16/11;background:linear-gradient(140deg,#E8C9A8 0%,#C98B5E 55%,#8A5634 100%);background-size:cover;background-position:center}
 .ncard__body{padding:26px;display:flex;flex-direction:column;flex:1}
 .ncard__date{color:var(--magenta);font-weight:600;font-size:14px}
-.ncard__title{margin:10px 0 14px;font-family:var(--font-display);font-weight:700;font-size:20px;color:var(--purple-900)}
+.ncard__title{margin:10px 0 0px;font-family:var(--font-display);font-weight:700;font-size:20px;color:var(--purple-900)}
 .ncard hr{border:0;border-top:1px solid #eee;margin:0 0 14px;width:100%}
 .ncard__excerpt{color:var(--text-muted);font-size:15px;margin-bottom:18px;flex:1}
 /* ==========================================================================
@@ -1854,6 +1854,9 @@ h3.display,.h3{font-size:clamp(22px,2vw,32px)}
 .vac-card {
   padding: 0 0 26px;
   border-bottom: 1px solid #d9d9d9;
+  display: flex;
+  flex-direction: column;
+  height: 100%;
 }
 
 .vac-card h3 {
@@ -1862,8 +1865,9 @@ h3.display,.h3{font-size:clamp(22px,2vw,32px)}
   font-weight: 700;
   font-size: clamp(24px, 1.7vw, 40px);
   line-height: 1.1;
+  height: calc(1.1em * 2);
   color: var(--magenta);
-  max-width: 12ch;
+  max-width: 20ch;
 }
 
 .vac-card__meta,
@@ -1893,7 +1897,8 @@ h3.display,.h3{font-size:clamp(22px,2vw,32px)}
   display: flex;
   align-items: center;
   gap: 12px;
-  margin-top: 22px;
+  padding-top: 22px;
+  margin-top: auto;
 }
 
 .vac-card__btn {
@@ -2461,15 +2466,70 @@ h3.display,.h3{font-size:clamp(22px,2.2vw,34px)}
 }
 
 /* News cards: no card bg, image 514x320 r10, Barlow magenta title */
-.ncard{background:none;box-shadow:none;border-radius:0;overflow:visible}
-.ncard:hover{transform:none;box-shadow:none}
-.ncard__img{aspect-ratio:514/320;border-radius:10px}
-.ncard__body{padding:20px 0 0}
-.ncard hr{border:0;border-top:1px solid #E6E1EE;margin:14px 0;width:100%}
+.ncard {
+  background: none;
+  box-shadow: none;
+  border-radius: 0;
+  overflow: visible;
+  display: flex;
+  flex-direction: column;
+  height: 100%; 
+}
+.ncard:hover {
+  transform: none;
+  box-shadow: none;
+}
+.ncard__img {
+  aspect-ratio: 514/320;
+  border-radius: 10px;
+  background-size: cover; /* Ensures your background images behave nicely */
+  background-position: center;
+}
+.ncard__body {
+  padding: 20px 0 0;
+  display: flex;
+  flex-direction: column;
+  flex-grow: 1; 
+}
+.ncard hr {
+  border: 0;
+  border-top: 1px solid #E6E1EE;
+  margin: 14px 0;
+  width: 100%;
+}
 .ncard__date{color:var(--magenta);font-size:14px;text-transform:uppercase;letter-spacing:.02em;font-weight:400}
-.ncard__title{font-family:var(--font-body);font-weight:400;font-size:clamp(22px,2vw,32px);color:#444;line-height:1.25;transition:color .2s}
+.ncard__title {
+  font-family: var(--font-body);
+  font-weight: 400;
+  font-size: clamp(22px, 2vw, 32px);
+  color: #444;
+  transition: color .2s;
+
+  /* Explicit structural settings */
+  line-height: 1.25;
+  height: calc(1.25em * 4); 
+  
+  /* Clamping fallback mechanisms */
+  display: -webkit-box;
+  -webkit-line-clamp: 4;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
 .ncard:hover .ncard__title{color:var(--magenta)}
-.ncard__excerpt{color:#1E1E1E;font-size:16px;line-height:1.7}
+.ncard__excerpt {
+  color: #1E1E1E;
+  font-size: 16px;
+
+  /* Explicit structural settings */
+  line-height: 1.7;
+  height: calc(1.7em * 6);
+  
+  /* Clamping fallback mechanisms */
+  display: -webkit-box;
+  -webkit-line-clamp: 6;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
 .ncard__btn{display:inline-flex;align-items:center;justify-content:center;align-self:flex-start;min-width:113px;white-space:nowrap;height:44px;padding:0 20px;border:1px solid var(--magenta);border-radius:22px;background:#fff;color:var(--magenta);font-family:var(--font-body);font-weight:400;font-size:14px;line-height:1;transition:background .2s,color .2s}
 .ncard__btn:hover,.ncard:hover .ncard__btn{background:var(--magenta);color:#fff}
 .news-pager{display:flex;align-items:center;justify-content:flex-end;gap:10px;margin-top:clamp(40px,5vw,64px);flex-wrap:wrap}
