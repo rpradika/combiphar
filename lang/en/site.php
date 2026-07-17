@@ -20,4 +20,10 @@ return [
     'privacy' => 'Privacy Notice',
     'quick_links' => 'Quick Links',
     'scroll' => 'Scroll to Explore',
+    'notfound' => [
+        'code' => '404 Not Found',
+        'title' => 'Sorry, this page could not be found',
+        'text' => 'The page you are looking for may have been removed, had its name changed, or is temporarily unavailable',
+        'home' => 'Back to Homepage',
+    ],
 ];

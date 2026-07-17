@@ -2823,3 +2823,63 @@ html,body{overflow-x:hidden}
   .nav__search{display:inline-flex;align-items:center}
   .nav__search span{display:none}
 }
+
+/* ==========================================================================
+   404 — Figma 903:309. Fills the viewport below the sticky nav so the footer
+   sits below the fold, matching the design's full-height purple field.
+   ========================================================================== */
+.notfound{
+  background:#532882;
+  min-height:calc(100vh - var(--nav-h));
+  min-height:calc(100svh - var(--nav-h));
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  text-align:center;
+  padding:clamp(64px,9vw,120px) 0;
+}
+.notfound__code{
+  margin:0;
+  color:#bd106f;
+  font-family:var(--font-display);
+  font-weight:400;
+  font-size:clamp(40px,7vw,96px);
+  line-height:1.1;
+}
+.notfound__title{
+  margin:16px 0 0;
+  color:#fff;
+  font-family:var(--font-display);
+  font-weight:400;
+  font-size:clamp(22px,3.1vw,42px);
+  line-height:1.2;
+}
+.notfound__text{
+  /* 520px reproduces the design's two-line break at the 20px desktop size */
+  margin:clamp(24px,3vw,39px) auto 0;
+  max-width:520px;
+  color:#fff;
+  font-family:var(--font-display);
+  font-weight:400;
+  font-size:clamp(15px,1.15vw,20px);
+  line-height:1.5;
+}
+.notfound__btn{
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+  min-width:170px;
+  min-height:44px;
+  margin-top:clamp(16px,1.8vw,24px);
+  padding:0 24px;
+  border-radius:22px;
+  background:#df0077;
+  color:#fff;
+  font-family:var(--font-body);
+  font-weight:400;
+  font-size:14px;
+  text-decoration:none;
+  white-space:nowrap;
+  transition:filter .2s,transform .2s;
+}
+.notfound__btn:hover{filter:brightness(1.08);transform:translateY(-2px)}

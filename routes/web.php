@@ -46,6 +46,15 @@ foreach (SetLocale::SUPPORTED as $loc) {
             Route::post($slugs['contact'][$loc], [PageController::class, 'contactSubmit'])->name("contact.submit.$loc");
             Route::get($slugs['terms'][$loc], [PageController::class, 'terms'])->name("terms.$loc");
             Route::get($slugs['privacy'][$loc], [PageController::class, 'privacy'])->name("privacy.$loc");
+
+            /*
+             * Unknown path under this locale prefix. Registering it inside the group
+             * (rather than only handling the 404 exception) keeps SetLocale and the web
+             * middleware in play, so the page renders in the right locale with the
+             * shared nav/footer props. Left unnamed on purpose: a null route name makes
+             * HandleInertiaRequests fall altUrls back to the locale homes.
+             */
+            Route::fallback([PageController::class, 'notFound']);
         });
 }
 
@@ -65,3 +74,9 @@ Route::get('id/news/{slug}', fn ($slug) => redirect('/id/berita/'.$slug, 301));
 Route::redirect('en/csr', '/en/csr-community', 301);
 Route::redirect('en/privacy-notice', '/en/privacy-policy', 301);
 Route::get('en/csr/{slug}', fn ($slug) => redirect('/en/csr-community/'.$slug, 301));
+
+/*
+ * Unknown path with no locale prefix (e.g. /nope). Renders in the default locale;
+ * the per-locale fallbacks above are registered first, so they win for /id/* and /en/*.
+ */
+Route::fallback([PageController::class, 'notFound']);

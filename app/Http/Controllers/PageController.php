@@ -341,6 +341,15 @@ class PageController extends Controller
         ]);
     }
 
+    /**
+     * Renders the 404 page. Reached from the fallback routes (unmatched paths)
+     * and from the 404 handler in bootstrap/app.php (e.g. an unknown slug).
+     */
+    public function notFound(Request $request)
+    {
+        return Inertia::render('NotFound')->toResponse($request)->setStatusCode(404);
+    }
+
     public function sitemap()
     {
         $articles = Article::published()->get(['slug']);

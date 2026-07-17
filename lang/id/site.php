@@ -20,4 +20,10 @@ return [
     'privacy' => 'Kebijakan Privasi',
     'quick_links' => 'Tautan Cepat',
     'scroll' => 'Gulir untuk Menjelajah',
+    'notfound' => [
+        'code' => '404 Not Found',
+        'title' => 'Maaf, halaman ini tidak ditemukan',
+        'text' => 'Halaman yang Anda cari mungkin telah dihapus, telah diubah namanya atau sedang tidak tersedia saat ini',
+        'home' => 'Kembali ke Beranda',
+    ],
 ];
