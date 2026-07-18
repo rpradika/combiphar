@@ -61,6 +61,9 @@ $EXEC php artisan migrate --force
 
 log "Clearing caches + linking storage"
 $EXEC php artisan optimize:clear
+# Cache the merged config (skips parsing .env + every config file per request).
+# Safe: no runtime env() calls outside config/ (APP_FORCE_HTTPS reads config).
+$EXEC php artisan config:cache
 $EXEC php artisan storage:link --force || true
 
 # The SSR daemon (started by the image CMD) caches the bundle at boot; restart

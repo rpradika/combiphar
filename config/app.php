@@ -15,6 +15,10 @@ return [
 
     'name' => env('APP_NAME', 'Laravel'),
 
+    // Force https:// URL generation behind a TLS-terminating proxy. Read via
+    // config (not env()) so it survives `php artisan config:cache`.
+    'force_https' => env('APP_FORCE_HTTPS', false),
+
     /*
     |--------------------------------------------------------------------------
     | Application Environment

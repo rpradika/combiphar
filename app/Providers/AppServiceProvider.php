@@ -22,7 +22,7 @@ class AppServiceProvider extends ServiceProvider
     {
         // Fallback for hosts whose proxy does not forward X-Forwarded-Proto:
         // set APP_FORCE_HTTPS=true in that server's .env to force https URLs.
-        if (env('APP_FORCE_HTTPS', false)) {
+        if (config('app.force_https')) {
             URL::forceScheme('https');
         }
     }

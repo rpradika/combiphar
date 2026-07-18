@@ -15,6 +15,7 @@ services:
     volumes:
       - .:/var/www/html
       - ./docker/uploads.ini:/usr/local/etc/php/conf.d/uploads.ini
+      - ./docker/opcache.ini:/usr/local/etc/php/conf.d/opcache.ini
       - vendor:/var/www/html/vendor
       - node_modules:/var/www/html/node_modules
     depends_on:
