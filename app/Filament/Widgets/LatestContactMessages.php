@@ -24,9 +24,10 @@ class LatestContactMessages extends TableWidget
     public function table(Table $table): Table
     {
         return $table
-            ->query(ContactMessage::query()->latest())
-            ->paginated([5, 10, 25])
-            ->defaultPaginationPageOption(5)
+            // Cap at 4 with no pagination so the widget never forces a scroll;
+            // the full list lives in ContactMessageResource.
+            ->query(ContactMessage::query()->latest()->limit(4))
+            ->paginated(false)
             ->columns([
                 Tables\Columns\TextColumn::make('name')
                     ->label('Nama')

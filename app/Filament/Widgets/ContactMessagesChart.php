@@ -18,6 +18,9 @@ class ContactMessagesChart extends ChartWidget
 
     protected int|string|array $columnSpan = 'full';
 
+    // Kept short so the full dashboard fits without scrolling.
+    protected static ?string $maxHeight = '110px';
+
     public ?string $filter = '12';
 
     protected function getType(): string

@@ -15,6 +15,9 @@ class ArticlesByCategoryChart extends ChartWidget
 
     protected static ?int $sort = 3;
 
+    // Kept short so the full dashboard fits without scrolling.
+    protected static ?string $maxHeight = '130px';
+
     /** Mirrors the category options in ArticleResource; unknown keys fall back to the raw value. */
     private const LABELS = [
         'pembaruan_korporasi' => 'Investor Update',

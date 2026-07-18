@@ -17,6 +17,9 @@ class ProductsByCategoryChart extends ChartWidget
 
     protected static ?int $sort = 4;
 
+    // Kept short so the full dashboard fits without scrolling.
+    protected static ?string $maxHeight = '130px';
+
     protected function getType(): string
     {
         return 'bar';
