@@ -807,22 +807,6 @@ export default function Contact({ page, vacancies, faqs }) {
                   </p>
                 )}
               </div>
-              <a
-                className="vac-modal__apply"
-                href={
-                  vac.applyUrl ||
-                  `mailto:recruitment@combiphar.com?subject=${encodeURIComponent(
-                    (en ? "Application" : "Lamaran") +
-                      ": " +
-                      vac.title +
-                      (vac.location ? " - " + vac.location : ""),
-                  )}`
-                }
-                target="_blank"
-                rel="noopener noreferrer"
-              >
-                {en ? "Apply Now" : "Lamar Sekarang"}
-              </a>
             </div>
 
             <div className="vac-modal__body">
@@ -848,6 +832,24 @@ export default function Contact({ page, vacancies, faqs }) {
                   />
                 </div>
               )}
+            </div>
+            <div className="vac-modal__footer">
+              <a
+                className="vac-modal__apply"
+                href={
+                  vac.applyUrl ||
+                  `mailto:recruitment@combiphar.com?subject=${encodeURIComponent(
+                    (en ? "Application" : "Lamaran") +
+                      ": " +
+                      vac.title +
+                      (vac.location ? " - " + vac.location : ""),
+                  )}`
+                }
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                {en ? "Apply Now" : "Lamar Sekarang"}
+              </a>
             </div>
           </div>
         )}
