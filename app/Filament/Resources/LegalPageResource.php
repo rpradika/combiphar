@@ -22,6 +22,14 @@ class LegalPageResource extends Resource
 
     protected static ?string $navigationIcon = 'heroicon-o-document-text';
 
+    /** Toolbar for the legal bodies — headings included; `.legal-body` styles h2/h3. */
+    private const TOOLBAR = [
+        'bold', 'italic', 'underline', 'strike',
+        'h2', 'h3',
+        'bulletList', 'orderedList',
+        'link', 'undo', 'redo',
+    ];
+
     public static function form(Form $form): Form
     {
         return $form
@@ -37,14 +45,14 @@ class LegalPageResource extends Resource
                 Forms\Components\TextInput::make('title_en')
                     ->label('Title (EN)')
                     ->maxLength(255),
-                Forms\Components\Textarea::make('body_id')
-                    ->label('Isi Halaman — HTML (ID)')
-                    ->helperText('Konten HTML mentah (diimpor dari combiphar.com). Edit dengan hati-hati agar tag HTML tetap valid.')
-                    ->rows(20)
+                Forms\Components\RichEditor::make('body_id')
+                    ->label('Isi Halaman (ID)')
+                    ->helperText('Gunakan Judul 2 / Judul 3 untuk sub-bagian dan tebal untuk penekanan.')
+                    ->toolbarButtons(self::TOOLBAR)
                     ->columnSpanFull(),
-                Forms\Components\Textarea::make('body_en')
-                    ->label('Page Content — HTML (EN)')
-                    ->rows(20)
+                Forms\Components\RichEditor::make('body_en')
+                    ->label('Page Content (EN)')
+                    ->toolbarButtons(self::TOOLBAR)
                     ->columnSpanFull(),
             ]);
     }
