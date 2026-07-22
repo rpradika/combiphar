@@ -104,34 +104,33 @@ export default function Csr({ page, esg, health, sports }) {
         </section>
       )}
 
-      {esg.length > 0 && (
+      {(esg.length > 0 || health.length > 0) && (
         <section className="section">
           <div className="container">
-            <div className="sec-head sec-head--product rv">
-              <h2 className="display">Environmental, Social, and Governance</h2>
-              <p>
-                {en
-                  ? "Combiphar applies ESG principles as part of the company long-term commitment to creating growth that is responsible, sustainable, and impactful for society and the environment."
-                  : "Combiphar menerapkan prinsip ESG sebagai bagian dari komitmen jangka panjang perusahaan dalam menciptakan pertumbuhan yang bertanggung jawab, berkelanjutan, dan berdampak bagi masyarakat serta lingkungan."}
-              </p>
-            </div>
-            <CsrList items={esg} learnMore={learnMore} />
-          </div>
-        </section>
-      )}
+            {esg.length > 0 && (
+              <>
+                <div className="sec-head sec-head--product rv">
+                  <h2 className="display">Environmental, Social, and Governance</h2>
+                  <p>
+                    {en
+                      ? "Combiphar applies ESG principles as part of the company long-term commitment to creating growth that is responsible, sustainable, and impactful for society and the environment."
+                      : "Combiphar menerapkan prinsip ESG sebagai bagian dari komitmen jangka panjang perusahaan dalam menciptakan pertumbuhan yang bertanggung jawab, berkelanjutan, dan berdampak bagi masyarakat serta lingkungan."}
+                  </p>
+                </div>
+                <CsrList items={esg} learnMore={learnMore} />
+              </>
+            )}
 
-      {health.length > 0 && (
-        <section className="section">
-          <div className="container">
-            <div className="sec-head sec-head--product rv">
-              <h2 className="display">Health Campaign</h2>
-              <p>
-                {en
-                  ? "Through various Health Campaigns, Combiphar delivers initiatives supporting health, empowerment, education, and an active lifestyle to create a positive impact for Indonesian society."
-                  : "Melalui berbagai Health Campaign, Combiphar menghadirkan inisiatif yang mendukung kesehatan, pemberdayaan, pendidikan, dan gaya hidup aktif untuk menciptakan dampak positif bagi masyarakat Indonesia."}
-              </p>
-            </div>
-            <CsrList items={health} learnMore={learnMore} />
+            {/* Health Campaign — heading + description removed by request. The
+                cards flow directly under the ESG cards inside the same section
+                and container (no separate section padding), so the first card
+                moves up and aligns with the previous section. Buttons are
+                per-card: "Kampanye Hidup Sehat" has its detail url cleared in
+                PageController::csr() (no button), while "Education" keeps its
+                "Pelajari Lebih Lanjut" link. */}
+            {health.length > 0 && (
+              <CsrList items={health} learnMore={learnMore} />
+            )}
           </div>
         </section>
       )}

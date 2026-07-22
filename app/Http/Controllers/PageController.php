@@ -254,14 +254,26 @@ class PageController extends Controller
         $all = CsrProgram::whereNull('parent_id')->orderBy('sort')->get();
         $map = fn ($rows) => $rows->values()->map(fn ($p) => [
             'title' => $p->tr('title'), 'body' => $p->tr('body'), 'image' => $this->img($p->image),
-            'link' => $p->link,
+            'link' => $p->link, 'slug' => $p->slug,
             'url' => $p->slug ? Localize::url('csr.show', app()->getLocale(), ['slug' => $p->slug]) : null,
         ]);
+
+        $health = $map($all->where('category', 'health_campaign'));
+        // "Kampanye Hidup Sehat" (healthy-living) is informational — clear its
+        // detail url so the card shows no button; the Education card keeps its
+        // "Pelajari Lebih Lanjut" link.
+        $health->transform(function ($c) {
+            if ($c['slug'] === 'healthy-living') {
+                $c['url'] = null;
+            }
+
+            return $c;
+        });
 
         return Inertia::render('Csr', [
             'page' => $this->page('csr'),
             'esg' => $map($all->where('category', 'esg')),
-            'health' => $map($all->where('category', 'health_campaign')),
+            'health' => $health,
             'sports' => $map($all->where('category', 'sports')),
         ]);
     }
