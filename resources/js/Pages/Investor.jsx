@@ -417,8 +417,8 @@ export default function Investor({
 
       {/* Main Relative Container to Anchor the Overlay */}
       <div style={{ position: "relative", minHeight: "450px" }}>
-        {/* Blurred Content */}
-        <div className="content-blurred">
+        {/* Content is blurred only while under development (toggle in CMS). */}
+        <div className={page?.underDevelopment ? "content-blurred" : ""}>
 
       <nav className="subnav" aria-label="Investor submenu">
         <div className="container subnav__inner">
@@ -535,9 +535,9 @@ export default function Investor({
       {activeTab === "contact" && (
         <ContactSection en={en} title={titleFor("contact")} />
       )}
-      {/* Coming Soon Glassmorphism Overlay */}
+      {/* Coming Soon Glassmorphism Overlay — only while under development */}
       </div>
-        <ComingSoonOverlay en={en} />
+        {page?.underDevelopment && <ComingSoonOverlay en={en} />}
       </div>
     </>
   )

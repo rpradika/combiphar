@@ -10,4 +10,8 @@ class Page extends Model
     use HasLocalizedContent;
 
     protected $guarded = [];
+
+    protected $casts = [
+        'under_development' => 'boolean',
+    ];
 }

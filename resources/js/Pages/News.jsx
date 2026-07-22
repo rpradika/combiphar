@@ -42,7 +42,14 @@ function pageList(total, current) {
   return out
 }
 
-export default function News({ page, investor, health, product, others }) {
+export default function News({
+  page,
+  investor,
+  health,
+  product,
+  others,
+  investorUnderDevelopment = false,
+}) {
   const {
     props: { t, locale, homeUrl },
   } = usePage()
@@ -174,38 +181,69 @@ export default function News({ page, investor, health, product, others }) {
 
       <section className="section">
         <div className="container">
-          <div className="sec-head sec-head--product rv">
-            <h2 className="display">{active.label}</h2>
-            <p>{active.desc}</p>
-          </div>
-
-          <Cards items={paged} readMore={readMore} empty={empty} />
-
-          {totalPages > 1 && (
-            <div className="news-pager rv" aria-label="Pagination">
-              <span className="news-pager__label">
-                {en ? "Page:" : "Halaman:"}
-              </span>
-              {pageList(totalPages, pageNum).map((p, i) =>
-                p === "…" ? (
-                  <span key={`gap-${i}`} className="news-pager__gap">
-                    …
-                  </span>
-                ) : (
-                  <button
-                    key={p}
-                    type="button"
-                    className={
-                      "news-pager__num" + (pageNum === p ? " is-active" : "")
-                    }
-                    onClick={() => setPageNum(p)}
-                    aria-current={pageNum === p ? "page" : undefined}
-                  >
-                    {p}
-                  </button>
-                ),
-              )}
+          {tab === "investor" && investorUnderDevelopment ? (
+            // Investor Update under development (CMS toggle on the Investor page)
+            // — show the same "Segera Hadir" block as the Investor page (icon +
+            // title + description) in place of the article grid.
+            <div className="news-coming-soon">
+              <div className="coming-soon-icon">
+                <svg
+                  width="36"
+                  height="36"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  strokeWidth="2"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                >
+                  <circle cx="12" cy="12" r="10" />
+                  <polyline points="12 6 12 12 16 14" />
+                </svg>
+              </div>
+              <h2>{en ? "Coming Soon" : "Segera Hadir"}</h2>
+              <p>
+                {en
+                  ? "We are currently updating our Investor Relations portal to serve you better. Please check back soon!"
+                  : "Kami sedang melakukan pembaruan pada portal Hubungan Investor untuk memberikan informasi yang lebih baik."}
+              </p>
             </div>
+          ) : (
+            <>
+              <div className="sec-head sec-head--product rv">
+                <h2 className="display">{active.label}</h2>
+                <p>{active.desc}</p>
+              </div>
+
+              <Cards items={paged} readMore={readMore} empty={empty} />
+
+              {totalPages > 1 && (
+                <div className="news-pager rv" aria-label="Pagination">
+                  <span className="news-pager__label">
+                    {en ? "Page:" : "Halaman:"}
+                  </span>
+                  {pageList(totalPages, pageNum).map((p, i) =>
+                    p === "…" ? (
+                      <span key={`gap-${i}`} className="news-pager__gap">
+                        …
+                      </span>
+                    ) : (
+                      <button
+                        key={p}
+                        type="button"
+                        className={
+                          "news-pager__num" + (pageNum === p ? " is-active" : "")
+                        }
+                        onClick={() => setPageNum(p)}
+                        aria-current={pageNum === p ? "page" : undefined}
+                      >
+                        {p}
+                      </button>
+                    ),
+                  )}
+                </div>
+              )}
+            </>
           )}
         </div>
       </section>

@@ -60,6 +60,11 @@ class PageResource extends Resource
                 Forms\Components\FileUpload::make('banner_image')
                     ->image()
                     ->helperText('Banner untuk halaman selain Beranda (About, Products, dll).'),
+                Forms\Components\Toggle::make('under_development')
+                    ->label('Dalam Pengembangan — tampilkan "Segera Hadir"')
+                    ->helperText('Aktif: halaman Investor + tab "Investor Update" di Berita menampilkan konten "Segera Hadir". Nonaktif: menampilkan konten sebenarnya.')
+                    ->visible(fn (?Page $record) => $record?->slug === 'investor')
+                    ->default(false),
                 Forms\Components\Section::make('Media Halaman Beranda (Home)')
                     ->description('Diisi hanya untuk halaman dengan slug "home".')
                     ->collapsible()

@@ -59,6 +59,7 @@ class PageController extends Controller
             'manifestoVideo' => $p->manifesto_video_file ? $this->img($p->manifesto_video_file) : $p->manifesto_video,
             'ctaImage' => $this->img($p->cta_image),
             'ctaTitle' => $p->tr('cta_title'),
+            'underDevelopment' => (bool) $p->under_development,
             'intro' => $p->tr('intro'),
             'vision' => $p->tr('vision'),
             'mission' => $p->tr('mission'),
@@ -414,6 +415,8 @@ class PageController extends Controller
 
         return Inertia::render('News', [
             'page' => $this->page('news'),
+            // The "Investor Update" tab mirrors the Investor page's toggle.
+            'investorUnderDevelopment' => (bool) optional(Page::where('slug', 'investor')->first())->under_development,
             'investor' => $byCat('pembaruan_korporasi'),
             'health' => $byCat('edukasi_gaya_hidup'),
             'product' => $byCat('informasi_produk'),
