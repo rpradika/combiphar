@@ -1505,7 +1505,7 @@ h3.display,.h3{font-size:clamp(22px,2vw,32px)}
 .sport-detail__desc p{margin:0 0 16px}
 .sport-detail__desc p:last-child{margin-bottom:0}
 .sport-gallery{display:grid;grid-template-columns:repeat(3,1fr);gap:20px}
-.sport-gallery__item{aspect-ratio:527/395;border-radius:10px;background:#F3F2F3 center/cover no-repeat}
+.sport-gallery__item{aspect-ratio:527/395;border-radius:10px;background:#F3F2F3 center/cover no-repeat;display:block;width:100%;object-fit:cover}
 @media(max-width:860px){.sport-detail__head{grid-template-columns:1fr;gap:16px}.sport-gallery{grid-template-columns:repeat(2,1fr)}}
 @media(max-width:520px){.sport-gallery{grid-template-columns:1fr}}
 /* CSR gallery detail (Figma 646:1864) — banner title + right subtitle, photo grid, "See All" */
