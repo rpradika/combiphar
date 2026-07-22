@@ -10,4 +10,8 @@ class Award extends Model
     use HasLocalizedContent;
 
     protected $guarded = [];
+
+    protected $casts = [
+        'is_hero' => 'boolean',
+    ];
 }

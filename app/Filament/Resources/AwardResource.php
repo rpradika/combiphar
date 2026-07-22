@@ -35,7 +35,13 @@ class AwardResource extends Resource
                 Forms\Components\TextInput::make('title_en')
                     ->maxLength(255),
                 Forms\Components\TextInput::make('year')
+                    ->label('Tahun')
+                    ->helperText('Mengelompokkan penghargaan pada popup "Pencapaian & Penghargaan" (filter Tahun).')
                     ->numeric(),
+                Forms\Components\Toggle::make('is_hero')
+                    ->label('Tampilkan sebagai Hero (logo di halaman)')
+                    ->helperText('Aktif = tampil sebagai logo di halaman Tentang Kami. Nonaktif = hanya muncul di popup "detail" (dikelompokkan per tahun). Jika tidak ada yang diaktifkan, semua tampil sebagai logo.')
+                    ->default(false),
                 Forms\Components\FileUpload::make('image')
                     ->image(),
                 Forms\Components\Hidden::make('sort')->default(fn () => (static::getModel()::max('sort') ?? 0) + 1),

@@ -128,6 +128,7 @@ class PageController extends Controller
             'corporateSecretary' => Person::where('group', 'corporate_secretary')->orderBy('sort')->get()->map($person),
             'awards' => Award::orderBy('sort')->get()->map(fn ($a) => [
                 'title' => $a->tr('title'), 'year' => $a->year, 'image' => $this->img($a->image),
+                'is_hero' => (bool) $a->is_hero,
             ]),
             'shops' => $this->shops(),
             'facilities' => Facility::orderBy('sort')->get()->map(fn ($f) => [

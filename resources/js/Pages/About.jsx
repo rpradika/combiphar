@@ -84,6 +84,33 @@ export default function About({
     () => [...new Set(offices.map((o) => o.category).filter(Boolean))],
     [offices],
   )
+
+  // Pencapaian & Penghargaan splits in two: hero awards render as logos on the
+  // page (fall back to all awards when none are flagged, so logos never vanish),
+  // the rest open in a "detail" popup grouped by year (Figma 946:44).
+  const [awardsOpen, setAwardsOpen] = useState(false)
+  const heroAwards = useMemo(() => {
+    const hero = awards.filter((a) => a.is_hero)
+    return hero.length ? hero : awards
+  }, [awards])
+  const archiveAwards = useMemo(() => awards.filter((a) => !a.is_hero), [awards])
+  const awardYears = useMemo(
+    () =>
+      [...new Set(archiveAwards.map((a) => a.year).filter(Boolean))].sort(
+        (a, b) => b - a,
+      ),
+    [archiveAwards],
+  )
+  const [awardYear, setAwardYear] = useState(() =>
+    awardYears.length ? String(awardYears[0]) : "all",
+  )
+  const shownAwards = useMemo(
+    () =>
+      awardYear === "all"
+        ? archiveAwards
+        : archiveAwards.filter((a) => String(a.year) === awardYear),
+    [archiveAwards, awardYear],
+  )
   const visibleOffices = offices.filter(
     (o) => (!city || o.city === city) && (!cat || o.category === cat),
   )
@@ -307,9 +334,18 @@ export default function About({
                   ? "Our commitment to quality and sustainability is recognised through national and international awards."
                   : "Komitmen kami terhadap kualitas dan keberlanjutan diakui melalui berbagai penghargaan nasional maupun internasional."}
               </p>
+              {archiveAwards.length > 0 && (
+                <button
+                  type="button"
+                  className="awards-detail-link"
+                  onClick={() => setAwardsOpen(true)}
+                >
+                  {en ? "Click here for details" : "Klik di sini untuk detail"}
+                </button>
+              )}
             </div>
             <div className="awards rv" style={{ marginTop: 44 }}>
-              {awards.map((a, i) => (
+              {heroAwards.map((a, i) => (
                 <div className="award-tile" key={i}>
                   {a.image ? (
                     <img src={a.image} alt={a.title} />
@@ -355,6 +391,64 @@ export default function About({
           </div>
         </section>
       )}
+
+      <Modal
+        open={awardsOpen}
+        onClose={() => setAwardsOpen(false)}
+        closeLabel={t.close}
+        wide
+      >
+        <div className="awards-modal">
+          <h3 className="awards-modal__title display">
+            {en ? "Achievements & Awards" : "Pencapaian & Penghargaan"}
+          </h3>
+          {awardYears.length > 0 && (
+            <div className="awards-modal__filter">
+              <span className="awards-modal__filter-label">
+                {en ? "Year:" : "Tahun:"}
+              </span>
+              <span className="selectbox">
+                <select
+                  value={awardYear}
+                  onChange={(e) => setAwardYear(e.target.value)}
+                  aria-label={en ? "Filter by year" : "Saring berdasarkan tahun"}
+                >
+                  {awardYears.map((y) => (
+                    <option key={y} value={String(y)}>
+                      {y}
+                    </option>
+                  ))}
+                  <option value="all">
+                    {en ? "All Years" : "Semua Tahun"}
+                  </option>
+                </select>
+              </span>
+            </div>
+          )}
+          <div className="awards-modal__grid">
+            {shownAwards.map((a, i) => (
+              <figure className="awards-modal__tile" key={i}>
+                <div
+                  className="awards-modal__img"
+                  style={
+                    a.image ? { backgroundImage: `url('${a.image}')` } : {}
+                  }
+                >
+                  {!a.image && <span>{a.title}</span>}
+                </div>
+                <figcaption>{a.title}</figcaption>
+              </figure>
+            ))}
+          </div>
+          {shownAwards.length === 0 && (
+            <p className="awards-modal__empty">
+              {en
+                ? "No achievements for this year."
+                : "Tidak ada pencapaian untuk tahun ini."}
+            </p>
+          )}
+        </div>
+      </Modal>
 
       <section className="section" style={{ background: "var(--surface)" }}>
         <div className="container">
