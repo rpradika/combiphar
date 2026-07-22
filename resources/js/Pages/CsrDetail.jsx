@@ -240,10 +240,13 @@ export default function CsrDetail({
             <div className="csr-gallery rv">
               {gallery.map((g, i) => (
                 <figure className="csr-gallery__item" key={i}>
-                  <div
+                  <img
                     className="csr-gallery__img"
-                    style={{ backgroundImage: `url('${g.image}')` }}
-                  ></div>
+                    src={g.image}
+                    alt={g.caption || ""}
+                    loading="lazy"
+                    decoding="async"
+                  />
                   {g.caption && (
                     <figcaption className="csr-gallery__cap">
                       {g.caption}

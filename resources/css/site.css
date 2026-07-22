@@ -1516,7 +1516,7 @@ h3.display,.h3{font-size:clamp(22px,2vw,32px)}
 /* CSR detail gallery grid with a per-image caption (CSR only; Sports keeps .sport-gallery) */
 .csr-gallery{display:grid;grid-template-columns:repeat(3,1fr);gap:20px}
 .csr-gallery__item{display:flex;flex-direction:column;gap:12px;margin:0}
-.csr-gallery__img{aspect-ratio:527/395;border-radius:10px;background:#F3F2F3 center/cover no-repeat}
+.csr-gallery__img{aspect-ratio:527/395;border-radius:10px;background:#F3F2F3 center/cover no-repeat;display:block;width:100%;object-fit:cover}
 .csr-gallery__cap{color:var(--text);font-family:var(--font-body);font-size:15px;line-height:1.5}
 @media(max-width:860px){.csr-gallery{grid-template-columns:repeat(2,1fr)}}
 @media(max-width:520px){.csr-gallery{grid-template-columns:1fr}}

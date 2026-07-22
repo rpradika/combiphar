@@ -325,7 +325,7 @@ export default function About({
               {heroAwards.map((a, i) => (
                 <div className="award-tile" key={i}>
                   {a.image ? (
-                    <img src={a.image} alt={a.title} />
+                    <img src={a.image} alt={a.title} loading="lazy" decoding="async" />
                   ) : (
                     <span>
                       {a.title}
@@ -407,7 +407,7 @@ export default function About({
               <figure className="awards-modal__tile" key={i}>
                 <div className="awards-modal__img">
                   {a.image ? (
-                    <img src={a.image} alt={a.title} />
+                    <img src={a.image} alt={a.title} loading="lazy" decoding="async" />
                   ) : (
                     <span>{a.title}</span>
                   )}

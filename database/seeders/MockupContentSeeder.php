@@ -123,7 +123,7 @@ class MockupContentSeeder extends Seeder
 
         // ---- Product category images ----
         ProductCategory::where('slug', 'consumer-health')->update([
-            'image' => 'seed/product-consumer-health.png',
+            'image' => 'seed/product-consumer-health.jpg',
         ]);
 
         ProductCategory::where('slug', 'speciality-care')->update([
@@ -131,7 +131,7 @@ class MockupContentSeeder extends Seeder
         ]);
 
         ProductCategory::where('slug', 'nutrition-herbal')->update([
-            'image' => 'seed/product-nutrition-herbal-care.png',
+            'image' => 'seed/product-nutrition-herbal-care.jpg',
         ]);
 
         // ---- News cover images (health articles) ----

@@ -20,8 +20,10 @@ class OptimizeImages extends Command
 {
     protected $signature = 'images:optimize
         {--dry-run : Report what would change without touching files}
-        {--max-width=1920 : Resize images wider than this}
-        {--min-kb=400 : Skip files smaller than this}';
+        {--max-width=1920 : Resize images whose longest side exceeds this}
+        {--min-kb=400 : Skip files smaller than this}
+        {--dir= : Only scan this subdirectory of storage/app/public}
+        {--no-convert : Never convert PNG to JPEG (keeps every filename, so no DB refs change)}';
 
     protected $description = 'Resize + recompress oversized images in storage/app/public (opaque PNGs become JPEG, DB refs updated)';
 
@@ -36,7 +38,7 @@ class OptimizeImages extends Command
 
         $totalBefore = $totalAfter = $count = 0;
 
-        foreach ($disk->allFiles() as $rel) {
+        foreach ($disk->allFiles($this->option('dir') ?: null) as $rel) {
             $ext = strtolower(pathinfo($rel, PATHINFO_EXTENSION));
             if (! in_array($ext, ['png', 'jpg', 'jpeg'], true)) {
                 continue;
@@ -51,22 +53,27 @@ class OptimizeImages extends Command
             $im = $ext === 'png' ? @imagecreatefrompng($abs) : @imagecreatefromjpeg($abs);
             if (! $im) {
                 $this->warn("unreadable, skipped: {$rel}");
+
                 continue;
             }
 
             [$w, $h] = [imagesx($im), imagesy($im)];
-            if ($w > $maxW) {
-                $nh = (int) round($h * $maxW / $w);
-                $resized = imagecreatetruecolor($maxW, $nh);
+            // Bound the LONGEST side, not just width — portrait uploads
+            // (1080x1920 certificates etc.) are just as oversized.
+            if (max($w, $h) > $maxW) {
+                $nw = (int) round($w * $maxW / max($w, $h));
+                $nh = (int) round($h * $maxW / max($w, $h));
+                $resized = imagecreatetruecolor($nw, $nh);
                 // Preserve transparency through the resample for PNGs.
                 imagealphablending($resized, false);
                 imagesavealpha($resized, true);
-                imagecopyresampled($resized, $im, 0, 0, 0, 0, $maxW, $nh, $w, $h);
+                imagecopyresampled($resized, $im, 0, 0, 0, 0, $nw, $nh, $w, $h);
                 imagedestroy($im);
                 $im = $resized;
             }
 
-            $toJpeg = $ext !== 'png' || ! $this->hasTransparency($im);
+            $toJpeg = $ext !== 'png'
+                || (! $this->option('no-convert') && ! $this->hasTransparency($im));
             $tmp = $abs.'.opt';
             if ($toJpeg) {
                 // JPEG has no alpha channel; flatten onto white.
@@ -83,6 +90,7 @@ class OptimizeImages extends Command
             $newSize = filesize($tmp);
             if ($newSize >= $size) { // no win — keep the original
                 unlink($tmp);
+
                 continue;
             }
 
@@ -104,6 +112,7 @@ class OptimizeImages extends Command
 
             if ($dry) {
                 unlink($tmp);
+
                 continue;
             }
 

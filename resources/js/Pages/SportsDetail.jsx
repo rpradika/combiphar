@@ -32,11 +32,14 @@ function SportTeam({ team }) {
                     <>
                         <div className="sport-gallery rv">
                             {shown.map((img, j) => (
-                                <div
+                                <img
                                     className="sport-gallery__item"
                                     key={start + j}
-                                    style={{ backgroundImage: `url('${img}')` }}
-                                ></div>
+                                    src={img}
+                                    alt=""
+                                    loading="lazy"
+                                    decoding="async"
+                                />
                             ))}
                         </div>
 

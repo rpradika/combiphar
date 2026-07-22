@@ -273,7 +273,7 @@ export default function Products({ page, categories, socialIcons = {} }) {
                     </div>
 
                     <div className="pcard__img">
-                      {p.image && <img src={p.image} alt={p.name} />}
+                      {p.image && <img src={p.image} alt={p.name} loading="lazy" decoding="async" />}
                     </div>
                   </article>
                 ))}
