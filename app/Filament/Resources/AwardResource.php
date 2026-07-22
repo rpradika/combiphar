@@ -57,7 +57,6 @@ class AwardResource extends Resource
                 Tables\Columns\TextColumn::make('title_en')
                     ->searchable(),
                 Tables\Columns\TextColumn::make('year')
-                    ->numeric()
                     ->sortable(),
                 Tables\Columns\ImageColumn::make('image'),
                 Tables\Columns\TextColumn::make('sort')

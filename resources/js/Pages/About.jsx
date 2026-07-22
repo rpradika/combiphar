@@ -91,15 +91,15 @@ export default function About({
   const [awardsOpen, setAwardsOpen] = useState(false)
   const heroAwards = useMemo(() => {
     const hero = awards.filter((a) => a.is_hero)
-    return hero.length ? hero : awards
+    // Hero row shows at most 7 logos; falls back to all awards when none flagged.
+    return (hero.length ? hero : awards).slice(0, 7)
   }, [awards])
-  const archiveAwards = useMemo(() => awards.filter((a) => !a.is_hero), [awards])
+  // The "detail" popup always lists every award grouped by year (regardless of
+  // which are hero), so the "Click here for details" link is always available.
   const awardYears = useMemo(
     () =>
-      [...new Set(archiveAwards.map((a) => a.year).filter(Boolean))].sort(
-        (a, b) => b - a,
-      ),
-    [archiveAwards],
+      [...new Set(awards.map((a) => a.year).filter(Boolean))].sort((a, b) => b - a),
+    [awards],
   )
   const [awardYear, setAwardYear] = useState(() =>
     awardYears.length ? String(awardYears[0]) : "all",
@@ -107,9 +107,9 @@ export default function About({
   const shownAwards = useMemo(
     () =>
       awardYear === "all"
-        ? archiveAwards
-        : archiveAwards.filter((a) => String(a.year) === awardYear),
-    [archiveAwards, awardYear],
+        ? awards
+        : awards.filter((a) => String(a.year) === awardYear),
+    [awards, awardYear],
   )
   const visibleOffices = offices.filter(
     (o) => (!city || o.city === city) && (!cat || o.category === cat),
@@ -334,15 +334,13 @@ export default function About({
                   ? "Our commitment to quality and sustainability is recognised through national and international awards."
                   : "Komitmen kami terhadap kualitas dan keberlanjutan diakui melalui berbagai penghargaan nasional maupun internasional."}
               </p>
-              {archiveAwards.length > 0 && (
-                <button
-                  type="button"
-                  className="awards-detail-link"
-                  onClick={() => setAwardsOpen(true)}
-                >
-                  {en ? "Click here for details" : "Klik di sini untuk detail"}
-                </button>
-              )}
+              <button
+                type="button"
+                className="awards-detail-link"
+                onClick={() => setAwardsOpen(true)}
+              >
+                {en ? "Click here for details" : "Klik di sini untuk detail"}
+              </button>
             </div>
             <div className="awards rv" style={{ marginTop: 44 }}>
               {heroAwards.map((a, i) => (
@@ -428,13 +426,12 @@ export default function About({
           <div className="awards-modal__grid">
             {shownAwards.map((a, i) => (
               <figure className="awards-modal__tile" key={i}>
-                <div
-                  className="awards-modal__img"
-                  style={
-                    a.image ? { backgroundImage: `url('${a.image}')` } : {}
-                  }
-                >
-                  {!a.image && <span>{a.title}</span>}
+                <div className="awards-modal__img">
+                  {a.image ? (
+                    <img src={a.image} alt={a.title} />
+                  ) : (
+                    <span>{a.title}</span>
+                  )}
                 </div>
                 <figcaption>{a.title}</figcaption>
               </figure>
